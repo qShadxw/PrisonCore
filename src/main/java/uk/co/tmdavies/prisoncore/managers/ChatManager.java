@@ -3,6 +3,8 @@ package uk.co.tmdavies.prisoncore.managers;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import uk.co.tmdavies.prisoncore.PrisonCore;
 import uk.co.tmdavies.prisoncore.utils.Utils;
 
@@ -49,9 +51,36 @@ public class ChatManager {
      */
     public static String formatMessagePlayer(Player player, String message) {
 
-        String newMessage = message.replace("%player%", player.getDisplayName());
+        String chatcolour = "&7";
+        switch (PrisonCore.perms.getPlayerGroups(player)[0]) {
+            case "helper":
+            case "mod":
+            case "admin":
+            case "manager":
+            case "owner":
+                chatcolour = "&f";
+                break;
+            default:
+                chatcolour = "&7";
+                break;
+        }
 
-        System.out.println(PrisonCore.papiEnabled);
+        ItemStack mainHand = player.getInventory().getItemInMainHand();
+        ItemMeta itemMeta = mainHand.getItemMeta();
+        String itemDisplayName = " ";
+
+        if (itemMeta != null) {
+            itemDisplayName = itemMeta.getDisplayName();
+        }
+
+        String newMessage = message
+                .replace("%player%", player.getDisplayName())
+                .replace("%chat-colour%", chatcolour)
+                .replace("[item]", itemDisplayName)
+                .replace("{item}", itemDisplayName)
+                .replace("[i]", itemDisplayName)
+                .replace("{i}", itemDisplayName);
+
 
         if (PrisonCore.papiEnabled) newMessage = PlaceholderAPI.setPlaceholders(player, newMessage);
 
