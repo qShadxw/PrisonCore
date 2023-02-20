@@ -28,7 +28,7 @@ public final class PrisonCore extends JavaPlugin {
         new ChatListener(this);
         new JoinListener(this);
 
-        papiEnabled = Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI");
+        papiEnabled = (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null);
     }
 
 }
