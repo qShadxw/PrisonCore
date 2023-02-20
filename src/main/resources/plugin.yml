@@ -1,0 +1,12 @@
+name: PrisonCore
+version: '${project.version}'
+main: uk.co.tmdavies.prisoncore.PrisonCore
+api-version: 1.19
+authors: [ Carbonate, DoomFly3215 ]
+description: Prison Core TTB Prison
+commands:
+  core:
+    description: Main Command
+permissions:
+  prisoncore.admin:
+    default: op
