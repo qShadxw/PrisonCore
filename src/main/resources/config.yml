@@ -1,4 +1,4 @@
-chat-format: "&8(&r%vault_prefix%&%player% » %message%"
+chat-format: "%vault_prefix%%player%%vault_suffix% » %message%"
 # Permission "prison.join.vip"
 join-format: "&8(&a+&8) &7%player%"
 quit-format: "&8(&c-&8) &7%player%"
