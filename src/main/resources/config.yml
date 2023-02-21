@@ -1,4 +1,7 @@
+# Random Permissions:
+#     - Reload Command: "prisoncore.admin"
+#
 chat-format: "%vault_prefix%%player%%vault_suffix% &8» %chat-colour%%message%"
-# Permission "prison.join.vip"
+# Permission "prisoncore.join.vip"
 join-format: "&8(&a+&8) &7%player%"
 quit-format: "&8(&c-&8) &7%player%"

@@ -23,7 +23,7 @@ public class JoinListener implements Listener {
 
     @EventHandler
     public void onPlayerJoinEvent(PlayerJoinEvent event) {
-        if (!event.getPlayer().hasPermission("prison.join.vip")) {
+        if (!event.getPlayer().hasPermission("prisoncore.join.vip")) {
             event.setJoinMessage("");
             return;
         }
@@ -34,7 +34,7 @@ public class JoinListener implements Listener {
 
     @EventHandler
     public void onPlayerQuitEvent(PlayerQuitEvent event) {
-        if (!event.getPlayer().hasPermission("prison.join.vip")) {
+        if (!event.getPlayer().hasPermission("prisoncore.join.vip")) {
             event.setQuitMessage("");
             return;
         }
