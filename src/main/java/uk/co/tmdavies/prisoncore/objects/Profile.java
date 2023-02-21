@@ -6,12 +6,12 @@ import uk.co.tmdavies.prisoncore.managers.ChatManager;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PrisonPlayer {
+public class Profile {
 
     private final Player player;
     private List<ChatManager.Channel> activeChannels;
 
-    public PrisonPlayer(Player player) {
+    public Profile(Player player) {
 
         this.player = player;
         this.activeChannels = new ArrayList<>();

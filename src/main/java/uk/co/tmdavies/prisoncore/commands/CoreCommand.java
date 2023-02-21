@@ -43,8 +43,8 @@ public class CoreCommand implements CommandExecutor {
             plugin.reloadConfig();
 
             ChatListener.chatFormat = plugin.getConfig().getString("chat-format");
-            JoinListener.joinConfig = plugin.getConfig().getString("join-format");
-            JoinListener.quitConfig = plugin.getConfig().getString("quit-format");
+            JoinListener.joinFormat = plugin.getConfig().getString("join-format");
+            JoinListener.quitFormat = plugin.getConfig().getString("quit-format");
 
             sender.sendMessage(Utils.Chat("&aSuccessfully reloaded config."));
 

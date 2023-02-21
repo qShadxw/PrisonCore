@@ -7,17 +7,18 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import uk.co.tmdavies.prisoncore.PrisonCore;
 import uk.co.tmdavies.prisoncore.managers.ChatManager;
-import uk.co.tmdavies.prisoncore.objects.PrisonPlayer;
+import uk.co.tmdavies.prisoncore.objects.ChatMessage;
+import uk.co.tmdavies.prisoncore.objects.Profile;
 
 public class JoinListener implements Listener {
 
-    public static String joinConfig;
-    public static String quitConfig;
+    public static String joinFormat;
+    public static String quitFormat;
 
     public JoinListener(PrisonCore plugin) {
         Bukkit.getServer().getPluginManager().registerEvents(this, plugin);
-        joinConfig = plugin.getConfig().getString("join-format");
-        quitConfig = plugin.getConfig().getString("quit-format");
+        joinFormat = plugin.getConfig().getString("join-format");
+        quitFormat = plugin.getConfig().getString("quit-format");
     }
 
     @EventHandler
@@ -26,8 +27,9 @@ public class JoinListener implements Listener {
             event.setJoinMessage("");
             return;
         }
-        event.setJoinMessage(ChatManager.formatMessagePlayer(event.getPlayer(), joinConfig));
-        PrisonCore.prisonPlayers.put(event.getPlayer(), new PrisonPlayer(event.getPlayer()));
+
+        event.setJoinMessage(ChatManager.formatMessagePlayer(new ChatMessage(event.getPlayer(), joinFormat)));
+        PrisonCore.playerProfiles.put(event.getPlayer(), new Profile(event.getPlayer()));
     }
 
     @EventHandler
@@ -36,7 +38,7 @@ public class JoinListener implements Listener {
             event.setQuitMessage("");
             return;
         }
-        event.setQuitMessage(ChatManager.formatMessagePlayer(event.getPlayer(), quitConfig));
-        PrisonCore.prisonPlayers.remove(event.getPlayer());
+        event.setQuitMessage(ChatManager.formatMessagePlayer(new ChatMessage(event.getPlayer(), quitFormat)));
+        PrisonCore.playerProfiles.remove(event.getPlayer());
     }
 }

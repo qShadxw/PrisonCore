@@ -3,11 +3,13 @@ version: '${project.version}'
 main: uk.co.tmdavies.prisoncore.PrisonCore
 api-version: 1.19
 authors: [ Carbonate, DoomFly3215 ]
-softdepend: [ PlaceholderAPI ]
+softdepend: [ PlaceholderAPI, Vault ]
 description: Prison Core TTB Prison
 commands:
   core:
     description: Main Command
 permissions:
   prisoncore.admin:
+    default: op
+  prison.join.vip:
     default: op

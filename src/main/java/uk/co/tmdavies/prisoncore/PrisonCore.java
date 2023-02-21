@@ -8,20 +8,20 @@ import org.bukkit.plugin.java.JavaPlugin;
 import uk.co.tmdavies.prisoncore.commands.CoreCommand;
 import uk.co.tmdavies.prisoncore.listeners.ChatListener;
 import uk.co.tmdavies.prisoncore.listeners.JoinListener;
-import uk.co.tmdavies.prisoncore.objects.PrisonPlayer;
+import uk.co.tmdavies.prisoncore.objects.Profile;
 
 import java.util.HashMap;
 
 public final class PrisonCore extends JavaPlugin {
 
-    public static HashMap<Player, PrisonPlayer> prisonPlayers;
+    public static HashMap<Player, Profile> playerProfiles;
     public static boolean papiEnabled;
     public static Permission perms;
 
     @Override
     public void onLoad() {
         saveDefaultConfig();
-        prisonPlayers = new HashMap<>();
+        playerProfiles = new HashMap<>();
     }
 
     @Override
@@ -32,7 +32,7 @@ public final class PrisonCore extends JavaPlugin {
         new JoinListener(this);
 
         RegisteredServiceProvider<Permission> rsp = getServer().getServicesManager().getRegistration(Permission.class);
-        assert rsp != null;
+        assert rsp != null; // Maybe properly handle this later (if vault doesn't exist)
         perms = rsp.getProvider();
 
         papiEnabled = (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null);
