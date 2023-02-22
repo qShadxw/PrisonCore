@@ -182,28 +182,26 @@ public class Profile {
     public void saveData() {
 
         List<String> toSave = new ArrayList<>();
-        for (ChatManager.Channel channel : this.activeChannels)
-            toSave.add(String.valueOf(channel.getId()));
-        PrisonCore.profileCache.set("Profiles." + this.player.getUniqueId().toString() + ".Channels", toSave);
-        PrisonCore.profileCache.save();
+//        for (ChatManager.Channel channel : this.activeChannels)
+//            toSave.add(String.valueOf(channel.getId()));
+//        System.out.println(toSave);
+//        PrisonCore.profileCache.set("Profiles." + this.player.getUniqueId().toString() + ".Channels", toSave);
 
         toSave.clear();
 
         for (Map.Entry entry : this.currentEnchantments.entrySet())
             toSave.add(((Enchantment) entry.getKey()).getKey().getKey() + ":" + entry.getValue());
+        System.out.println(toSave);
         PrisonCore.profileCache.set("Profiles." + this.player.getUniqueId().toString() + ".Enchantments", toSave);
-        PrisonCore.profileCache.save();
 
         toSave.clear();
 
         for (Map.Entry entry : this.absorbedBlocks.entrySet())
             toSave.add(((Material) entry.getKey()).getKey().getKey() + ":" + entry.getValue());
+        System.out.println(toSave);
         PrisonCore.profileCache.set("Profiles." + this.player.getUniqueId().toString() + ".AbsorbsBlocks", toSave);
-        PrisonCore.profileCache.save();
 
         toSave.clear();
-
-        PrisonCore.profileCache.reload();
 
     }
 
@@ -217,15 +215,15 @@ public class Profile {
 
         if (PrisonCore.profileCache.get("Profiles." + this.player.getUniqueId().toString()) == null) return;
 
-        for (String string : PrisonCore.profileCache.getStringList("Profiles." + this.player.getUniqueId().toString() + ".Channels")) {
-
-            this.activeChannels.add(ChatManager.Channel.getById(Integer.parseInt(string)));
-
-        }
+//        for (String string : PrisonCore.profileCache.getStringList("Profiles." + this.player.getUniqueId().toString() + ".Channels")) {
+//
+//            this.activeChannels.add(ChatManager.Channel.getById(Integer.parseInt(string)));
+//
+//        }
 
         for (String string : PrisonCore.profileCache.getStringList("Profiles." + this.player.getUniqueId().toString() + ".Enchantments")) {
 
-            String[] enchantmentSplit = string.split(";");
+            String[] enchantmentSplit = string.split(":");
             Enchantment enchantment = null;
 
             for (Enchantment enchant : Enchantment.values())
@@ -241,7 +239,7 @@ public class Profile {
 
         for (String string : PrisonCore.profileCache.getStringList("Profiles." + this.player.getUniqueId().toString() + ".AbsorbsBlocks")) {
 
-            String[] blocksSplit = string.split(";");
+            String[] blocksSplit = string.split(":");
             Material material = null;
 
             for (Material mat : Material.values())

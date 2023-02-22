@@ -108,7 +108,7 @@ public class Config {
 
     public void set(String path, Object value) {
         this.ymlFile.set(path, value);
-        save();
+        reload();
     }
 
     public void add(String path, Object value) {
