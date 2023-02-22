@@ -1,20 +1,26 @@
 package uk.co.tmdavies.prisoncore.objects;
 
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import uk.co.tmdavies.prisoncore.managers.ChatManager;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class Profile {
 
     private final Player player;
     private List<ChatManager.Channel> activeChannels;
+    private HashMap<Enchantment, Integer> currentEnchantments;
 
     public Profile(Player player) {
 
         this.player = player;
         this.activeChannels = new ArrayList<>();
+        this.currentEnchantments = new HashMap<>();
+
+        this.activeChannels.addAll(List.of(ChatManager.Channel.values()));
 
     }
 
@@ -57,6 +63,75 @@ public class Profile {
     public List<ChatManager.Channel> getActiveChannels() {
 
         return this.activeChannels;
+
+    }
+
+    /**
+     *
+     * Adds an enchantment to the player.
+     *
+     * @param enchantment Enchantment.
+     * @param level Integer.
+     */
+    public void addEnchantment(Enchantment enchantment, int level) {
+
+        if (this.currentEnchantments.containsKey(enchantment)) return;
+
+        this.currentEnchantments.put(enchantment, level);
+
+    }
+
+    /**
+     *
+     * Removes an enchantment from the player.
+     *
+     * @param enchantment Enchantment.
+     */
+    public void removeEnchantment(Enchantment enchantment) {
+
+        if (!this.currentEnchantments.containsKey(enchantment)) return;
+
+        this.currentEnchantments.remove(enchantment);
+
+    }
+
+    /**
+     *
+     * Edit a current enchantment the player has.
+     *
+     * @param enchantment Enchantment.
+     * @param level Integer.
+     */
+    public void changeEnchantment(Enchantment enchantment, int level) {
+
+        if (!this.currentEnchantments.containsKey(enchantment)) return;
+
+        this.currentEnchantments.replace(enchantment, level);
+
+    }
+
+    /**
+     *
+     * Returns if the player has an enchantment.
+     *
+     * @param enchantment Enchantment.
+     * @return Boolean.
+     */
+    public boolean hasEnchantment(Enchantment enchantment) {
+
+        return this.currentEnchantments.containsKey(enchantment);
+
+    }
+
+    /**
+     *
+     * Returns the enchantments the player current has.
+     *
+     * @return HashMap< Enchantment, Integer >.
+     */
+    public HashMap<Enchantment, Integer> getCurrentEnchantments() {
+
+        return this.currentEnchantments;
 
     }
 

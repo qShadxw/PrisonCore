@@ -11,5 +11,5 @@ commands:
 permissions:
   prisoncore.admin:
     default: op
-  prison.join.vip:
+  prisoncore.join.vip:
     default: op

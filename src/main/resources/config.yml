@@ -1,4 +1,4 @@
-# Random Permissions:
+# Permissions:
 #     - Reload Command: "prisoncore.admin"
 #
 chat-format: "%vault_prefix%%player%%vault_suffix% &8» %chat-colour%%message%"
