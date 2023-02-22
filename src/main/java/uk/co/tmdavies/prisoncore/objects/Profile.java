@@ -200,6 +200,8 @@ public class Profile {
 
         toSave.clear();
 
+        PrisonCore.profileCache.reload();
+
     }
 
     /**

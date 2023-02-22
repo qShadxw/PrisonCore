@@ -31,7 +31,7 @@ public class ItemListener implements Listener {
 
         try {
 
-            switch (Objects.requireNonNull(event.getItem().getItemStack().getData()).getItemType()) {
+            switch (event.getItem().getItemStack().getType()) {
 
                 case WOODEN_PICKAXE:
                 case STONE_PICKAXE:
