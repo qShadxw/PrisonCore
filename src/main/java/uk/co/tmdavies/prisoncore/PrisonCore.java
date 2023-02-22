@@ -20,6 +20,7 @@ public final class PrisonCore extends JavaPlugin {
     public static Permission perms;
     public static Logger logger;
     public static Config itemCache;
+    public static Config profileCache;
 
     @Override
     public void onLoad() {
@@ -27,6 +28,7 @@ public final class PrisonCore extends JavaPlugin {
         saveDefaultConfig();
         playerProfiles = new HashMap<>();
         itemCache = new Config(PrisonCore.class, "itemcache.yml", false, true);
+        profileCache = new Config(PrisonCore.class, "profiles.yml", false, true);
     }
 
     @Override

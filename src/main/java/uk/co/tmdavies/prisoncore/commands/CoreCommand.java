@@ -50,6 +50,7 @@ public class CoreCommand implements CommandExecutor {
             JoinListener.joinFormat = plugin.getConfig().getString("join-format");
             JoinListener.quitFormat = plugin.getConfig().getString("quit-format");
             InteractListener.enabledBlocks.addAll(Arrays.asList(Objects.requireNonNull(plugin.getConfig().getString("absorb-able-blocks")).split(";")));
+            InteractListener.worldName = plugin.getConfig().getString("mines-world-name");
 
             sender.sendMessage(Utils.Chat("&aSuccessfully reloaded config."));
 

@@ -8,3 +8,5 @@ join-format: "&8(&a+&8) &7%player%"
 quit-format: "&8(&c-&8) &7%player%"
 # Split with ;
 absorb-able-blocks: "stone;coal_ore;iron_ore"
+# The World Name with all the Mines in.
+mines-world-name: "world"
