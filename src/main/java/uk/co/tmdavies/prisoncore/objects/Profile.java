@@ -142,7 +142,7 @@ public class Profile {
 
     /**
      *
-     * Returns the absrobed Blocks the player current has.
+     * Returns the absorbed Blocks the player current has.
      *
      * @return HashMap< Material, Integer >.
      */
@@ -154,7 +154,7 @@ public class Profile {
 
     /**
      *
-     * Adds a absorbed Block to the player.
+     * Adds an absorbed Block to the player.
      *
      * @param material material.
      * @param amount Integer.
@@ -162,8 +162,7 @@ public class Profile {
     public void addAbsorbedBlock(Material material, int amount) {
 
         if (this.absorbedBlocks.containsKey(material)) {
-            int current = this.absorbedBlocks.get(material);
-            this.absorbedBlocks.put(material, current + amount);
+            this.absorbedBlocks.replace(material, this.absorbedBlocks.get(material) + amount);
             return;
         }
 
