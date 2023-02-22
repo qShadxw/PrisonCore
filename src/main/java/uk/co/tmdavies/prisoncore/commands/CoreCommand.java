@@ -1,5 +1,6 @@
 package uk.co.tmdavies.prisoncore.commands;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -54,6 +55,10 @@ public class CoreCommand implements CommandExecutor {
 
             sender.sendMessage(Utils.Chat("&aSuccessfully reloaded config."));
 
+        }
+
+        if (args[0].equalsIgnoreCase("debug")) {
+            Bukkit.getServer().broadcastMessage(PrisonCore.playerProfiles.get(sender).getAbsorbedBlocks().toString());
         }
 
         return true;

@@ -29,10 +29,11 @@ public class InteractListener implements Listener {
 
     @EventHandler
     public void onBlockClickEvent(PlayerInteractEvent event) {
+        if (!event.getPlayer().getInventory().getItemInMainHand().getType().equals(Material.BEACON)) { return; }
         Material blocktype = event.getClickedBlock().getType();
         if (Objects.requireNonNull(blocktype) == Material.AIR) { return; }
-        if (!enabledBlocks.contains(blocktype)) { return; }
-        if (!event.getClickedBlock().getWorld().equals(worldName)) { return; }
+        if (!enabledBlocks.contains(blocktype.toString().toLowerCase())) { return; }
+        if (!event.getClickedBlock().getWorld().getName().equals(worldName)) { return; }
         Profile profile = PrisonCore.playerProfiles.get(event.getPlayer());
         profile.addAbsorbedBlock(blocktype, 1);
         event.getClickedBlock().setType(Material.AIR);
