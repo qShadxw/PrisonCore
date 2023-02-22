@@ -6,8 +6,12 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 import uk.co.tmdavies.prisoncore.PrisonCore;
 import uk.co.tmdavies.prisoncore.listeners.ChatListener;
+import uk.co.tmdavies.prisoncore.listeners.InteractListener;
 import uk.co.tmdavies.prisoncore.listeners.JoinListener;
 import uk.co.tmdavies.prisoncore.utils.Utils;
+
+import java.util.Arrays;
+import java.util.Objects;
 
 public class CoreCommand implements CommandExecutor {
 
@@ -45,6 +49,7 @@ public class CoreCommand implements CommandExecutor {
             ChatListener.chatFormat = plugin.getConfig().getString("chat-format");
             JoinListener.joinFormat = plugin.getConfig().getString("join-format");
             JoinListener.quitFormat = plugin.getConfig().getString("quit-format");
+            InteractListener.enabledBlocks.addAll(Arrays.asList(Objects.requireNonNull(plugin.getConfig().getString("absorb-able-blocks")).split(";")));
 
             sender.sendMessage(Utils.Chat("&aSuccessfully reloaded config."));
 

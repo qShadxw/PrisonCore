@@ -1,5 +1,6 @@
 package uk.co.tmdavies.prisoncore.objects;
 
+import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import uk.co.tmdavies.prisoncore.managers.ChatManager;
@@ -13,12 +14,14 @@ public class Profile {
     private final Player player;
     private List<ChatManager.Channel> activeChannels;
     private HashMap<Enchantment, Integer> currentEnchantments;
+    private HashMap<Material, Integer> absorbedBlocks;
 
     public Profile(Player player) {
 
         this.player = player;
         this.activeChannels = new ArrayList<>();
         this.currentEnchantments = new HashMap<>();
+        this.absorbedBlocks = new HashMap<>();
 
         this.activeChannels.addAll(List.of(ChatManager.Channel.values()));
 
@@ -132,6 +135,39 @@ public class Profile {
     public HashMap<Enchantment, Integer> getCurrentEnchantments() {
 
         return this.currentEnchantments;
+
+    }
+
+
+
+    /**
+     *
+     * Returns the absrobed Blocks the player current has.
+     *
+     * @return HashMap< Material, Integer >.
+     */
+    public HashMap<Material, Integer> getAbsorbedBlocks() {
+
+        return this.absorbedBlocks;
+
+    }
+
+    /**
+     *
+     * Adds a absorbed Block to the player.
+     *
+     * @param material material.
+     * @param amount Integer.
+     */
+    public void addAbsorbedBlock(Material material, int amount) {
+
+        if (this.absorbedBlocks.containsKey(material)) {
+            int current = this.absorbedBlocks.get(material);
+            this.absorbedBlocks.put(material, current + amount);
+            return;
+        }
+
+        this.absorbedBlocks.put(material, amount);
 
     }
 
