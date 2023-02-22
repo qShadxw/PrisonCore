@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import uk.co.tmdavies.prisoncore.PrisonCore;
 
@@ -16,8 +17,8 @@ public class BlockListener implements Listener {
     }
 
     @EventHandler
-    public void onBlockBreakEvent(BlockBreakEvent event) {
-
+    public void onBlockBreakEvent(BlockPlaceEvent event) {
+        if (event.getBlock().getType().equals(JoinListener.baItem.getType())) { event.setCancelled(true); }
     }
 
 }
