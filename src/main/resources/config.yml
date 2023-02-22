@@ -4,12 +4,12 @@
 #
 chat-format: "%vault_prefix%%player%%vault_suffix% &8» %chat-colour%%message%"
 # Permission "prisoncore.join.vip"
-join-format: "&8(&a+&8) &7%player%"
-quit-format: "&8(&c-&8) &7%player%"
+join-format: "&8(&a+&8) %vault_prefix%&7%player%%vault_suffix%"
+quit-format: "&8(&c-&8) %vault_prefix%&7%player%%vault_suffix%"
 # Split with ;
 absorb-able-blocks: "stone;coal_ore;iron_ore"
 # The World Name with all the Mines in.
 mines-world-name: "world"
 # Block Absorber
-ba-item: "beacon"
+ba-item: "bedrock"
 ba-item-name: "&a&lBLOCK ABSORBER"
