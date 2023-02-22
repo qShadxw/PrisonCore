@@ -6,9 +6,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import uk.co.tmdavies.prisoncore.commands.CoreCommand;
-import uk.co.tmdavies.prisoncore.listeners.ChatListener;
-import uk.co.tmdavies.prisoncore.listeners.ItemListener;
-import uk.co.tmdavies.prisoncore.listeners.JoinListener;
+import uk.co.tmdavies.prisoncore.listeners.*;
 import uk.co.tmdavies.prisoncore.objects.Config;
 import uk.co.tmdavies.prisoncore.objects.Logger;
 import uk.co.tmdavies.prisoncore.objects.Profile;
@@ -38,6 +36,8 @@ public final class PrisonCore extends JavaPlugin {
         new ChatListener(this);
         new JoinListener(this);
         new ItemListener(this);
+        new BlockListener(this);
+        new InteractListener(this);
 
         RegisteredServiceProvider<Permission> rsp = getServer().getServicesManager().getRegistration(Permission.class);
         assert rsp != null; // Maybe properly handle this later (if vault doesn't exist)
