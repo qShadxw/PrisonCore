@@ -9,6 +9,8 @@ import uk.co.tmdavies.prisoncore.commands.CoreCommand;
 import uk.co.tmdavies.prisoncore.listeners.ChatListener;
 import uk.co.tmdavies.prisoncore.listeners.ItemListener;
 import uk.co.tmdavies.prisoncore.listeners.JoinListener;
+import uk.co.tmdavies.prisoncore.objects.Config;
+import uk.co.tmdavies.prisoncore.objects.Logger;
 import uk.co.tmdavies.prisoncore.objects.Profile;
 
 import java.util.HashMap;
@@ -18,11 +20,15 @@ public final class PrisonCore extends JavaPlugin {
     public static HashMap<Player, Profile> playerProfiles;
     public static boolean papiEnabled;
     public static Permission perms;
+    public static Logger logger;
+    public static Config itemCache;
 
     @Override
     public void onLoad() {
+        logger = new Logger();
         saveDefaultConfig();
         playerProfiles = new HashMap<>();
+        itemCache = new Config(PrisonCore.class, "itemcache.yml", false, true);
     }
 
     @Override
