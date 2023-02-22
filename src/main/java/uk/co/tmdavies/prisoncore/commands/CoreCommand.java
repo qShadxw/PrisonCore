@@ -1,9 +1,12 @@
 package uk.co.tmdavies.prisoncore.commands;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 import uk.co.tmdavies.prisoncore.PrisonCore;
 import uk.co.tmdavies.prisoncore.listeners.ChatListener;
@@ -52,6 +55,12 @@ public class CoreCommand implements CommandExecutor {
             JoinListener.quitFormat = plugin.getConfig().getString("quit-format");
             InteractListener.enabledBlocks.addAll(Arrays.asList(Objects.requireNonNull(plugin.getConfig().getString("absorb-able-blocks")).split(";")));
             InteractListener.worldName = plugin.getConfig().getString("mines-world-name");
+
+            JoinListener.baItem = new ItemStack(Material.getMaterial(plugin.getConfig().getString("ba-item")));
+
+            ItemMeta im = JoinListener.baItem.getItemMeta();
+            im.setDisplayName(Utils.Colour(plugin.getConfig().getString("ba-item-name")));
+            JoinListener.baItem.setItemMeta(im);
 
             sender.sendMessage(Utils.Chat("&aSuccessfully reloaded config."));
 

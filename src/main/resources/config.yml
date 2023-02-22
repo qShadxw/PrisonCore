@@ -10,3 +10,6 @@ quit-format: "&8(&c-&8) &7%player%"
 absorb-able-blocks: "stone;coal_ore;iron_ore"
 # The World Name with all the Mines in.
 mines-world-name: "world"
+# Block Absorber
+ba-item: "beacon"
+ba-item-name: "&a&lBLOCK ABSORBER"
