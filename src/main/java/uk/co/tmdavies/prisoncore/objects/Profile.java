@@ -185,18 +185,21 @@ public class Profile {
         for (ChatManager.Channel channel : this.activeChannels)
             toSave.add(String.valueOf(channel.getId()));
         PrisonCore.profileCache.set("Profiles." + this.player.getUniqueId().toString() + ".Channels", toSave);
+        PrisonCore.profileCache.save();
 
         toSave.clear();
 
         for (Map.Entry entry : this.currentEnchantments.entrySet())
             toSave.add(((Enchantment) entry.getKey()).getKey().getKey() + ":" + entry.getValue());
         PrisonCore.profileCache.set("Profiles." + this.player.getUniqueId().toString() + ".Enchantments", toSave);
+        PrisonCore.profileCache.save();
 
         toSave.clear();
 
         for (Map.Entry entry : this.absorbedBlocks.entrySet())
             toSave.add(((Material) entry.getKey()).getKey().getKey() + ":" + entry.getValue());
         PrisonCore.profileCache.set("Profiles." + this.player.getUniqueId().toString() + ".AbsorbsBlocks", toSave);
+        PrisonCore.profileCache.save();
 
         toSave.clear();
 
