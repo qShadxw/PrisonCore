@@ -209,6 +209,12 @@ public class Config {
 
     }
 
+    public List<?> getList(String path) {
+
+        return this.ymlFile.getList(path);
+
+    }
+
     public String getColouredString(String path) {
         return Utils.Colour(this.getString(path));
     }

@@ -130,9 +130,32 @@ public class ChatManager {
 
     public enum Channel {
 
-        SYSTEM,
-        GENERAL,
-        PRIVATE;
+        SYSTEM(0),
+        GENERAL(1),
+        PRIVATE(2);
+
+        private final int id;
+
+        Channel(int id) {
+
+            this.id = id;
+
+        }
+
+        public int getId() {
+
+            return this.id;
+
+        }
+
+        public static Channel getById(int id) {
+
+            for (Channel channel : Channel.values())
+                if (channel.getId() == id) return channel;
+
+            return null;
+
+        }
 
     }
 

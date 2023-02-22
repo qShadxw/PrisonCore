@@ -54,6 +54,7 @@ public class JoinListener implements Listener {
             return;
         }
         event.setQuitMessage(ChatManager.formatMessagePlayer(new ChatMessage(event.getPlayer(), quitFormat)));
+        PrisonCore.playerProfiles.get(event.getPlayer()).saveData();
         PrisonCore.playerProfiles.remove(event.getPlayer());
     }
 }
