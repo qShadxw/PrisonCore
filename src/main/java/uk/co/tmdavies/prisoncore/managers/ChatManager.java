@@ -99,7 +99,7 @@ public class ChatManager {
         ItemStack handItem = player.getInventory().getItemInMainHand();
         ItemMeta itemMeta = handItem.getItemMeta();
 
-        if (handItem == null || handItem.getData().getItemType() == Material.AIR)
+        if (handItem == null || Objects.requireNonNull(handItem.getData()).getItemType() == Material.AIR)
             return new BaseComponent[] { new TextComponent(Utils.Colour(message.replace("[item]", "Hand"))) };
         if (itemMeta == null)
             return new BaseComponent[] { new TextComponent(Utils.Colour(message.replace("[item]", "Hand"))) };
@@ -108,11 +108,11 @@ public class ChatManager {
 
         StringBuilder builder = new StringBuilder();
 
-        builder.append(itemMeta.getDisplayName() + "\n");
+        builder.append(itemMeta.getDisplayName()).append("\n");
 
         for (String string : itemMeta.getLore()) builder.append(Utils.Colour(string)).append("\n");
 
-        String lore = builder.toString().substring(0, builder.toString().length() - 1);
+        String lore = builder.substring(0, builder.toString().length() - 1);
         ComponentBuilder componentBuilder = new ComponentBuilder();
         String[] messageParts = message.split(" ");
 

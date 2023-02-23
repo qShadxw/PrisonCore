@@ -5,9 +5,11 @@ import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 import uk.co.tmdavies.prisoncore.PrisonCore;
 import uk.co.tmdavies.prisoncore.listeners.ChatListener;
 import uk.co.tmdavies.prisoncore.listeners.InteractListener;
@@ -21,12 +23,12 @@ public class CoreCommand implements CommandExecutor {
 
     public CoreCommand(PrisonCore plugin) {
 
-        plugin.getCommand("core").setExecutor(this);
+        Objects.requireNonNull(plugin.getCommand("core")).setExecutor(this);
 
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String string, String[] args) {
+    public boolean onCommand(CommandSender sender, @NotNull Command cmd, @NotNull String string, String[] args) {
 
         if (!sender.hasPermission("prisoncore.admin")) {
 
@@ -53,12 +55,15 @@ public class CoreCommand implements CommandExecutor {
             ChatListener.chatFormat = plugin.getConfig().getString("chat-format");
             JoinListener.joinFormat = plugin.getConfig().getString("join-format");
             JoinListener.quitFormat = plugin.getConfig().getString("quit-format");
-            InteractListener.enabledBlocks.addAll(Arrays.asList(Objects.requireNonNull(plugin.getConfig().getString("absorb-able-blocks")).split(";")));
+            InteractListener.enabledBlocks.addAll(Arrays.asList(Objects.requireNonNull(
+                    plugin.getConfig().getString("absorb-able-blocks")).split(";")));
             InteractListener.worldName = plugin.getConfig().getString("mines-world-name");
 
-            JoinListener.baItem = new ItemStack(Material.getMaterial(plugin.getConfig().getString("ba-item")));
+            JoinListener.baItem = new ItemStack(Objects.requireNonNull(Material.getMaterial(Objects.requireNonNull(
+                    plugin.getConfig().getString("ba-item")))));
 
             ItemMeta im = JoinListener.baItem.getItemMeta();
+            assert im != null;
             im.setDisplayName(Utils.Colour(plugin.getConfig().getString("ba-item-name")));
             JoinListener.baItem.setItemMeta(im);
 
@@ -67,7 +72,7 @@ public class CoreCommand implements CommandExecutor {
         }
 
         if (args[0].equalsIgnoreCase("debug")) {
-            Bukkit.getServer().broadcastMessage(PrisonCore.playerProfiles.get(sender).getAbsorbedBlocks().toString());
+            Bukkit.getServer().broadcastMessage(PrisonCore.playerProfiles.get((Player) sender).getAbsorbedBlocks().toString());
         }
 
         return true;

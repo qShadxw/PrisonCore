@@ -16,21 +16,22 @@ public class InteractListener implements Listener {
 
     public static ArrayList<String> enabledBlocks = new ArrayList<>();
     public static String worldName;
+    private final String baItem;
 
     public InteractListener(PrisonCore plugin) {
 
         Bukkit.getPluginManager().registerEvents(this, plugin);
 
-        enabledBlocks.addAll(Arrays.asList(plugin.getConfig().getString("absorb-able-blocks").split(";")));
+        enabledBlocks.addAll(Arrays.asList(Objects.requireNonNull(plugin.getConfig().getString("absorb-able-blocks")).split(";")));
         worldName = plugin.getConfig().getString("mines-world-name");
+        baItem = Objects.requireNonNull(plugin.getConfig().getString("ba-item")).toUpperCase();
 
     }
 
     @EventHandler
     public void onBlockClickEvent(PlayerInteractEvent event) {
-        if (!event.getPlayer().getInventory().getItemInMainHand().getType().equals(Material.BEACON)) { return; }
+        if (!event.getPlayer().getInventory().getItemInMainHand().getType().equals(Material.getMaterial(Objects.requireNonNull(baItem)))) { return; }
         if (event.getClickedBlock() == null) { return; }
-        if (event.getClickedBlock().getType() == null) { return; }
         if (event.getClickedBlock().getType() == Material.AIR) { return; }
         Material blocktype = Objects.requireNonNull(event.getClickedBlock()).getType();
         if (!enabledBlocks.contains(blocktype.toString().toLowerCase())) { return; }

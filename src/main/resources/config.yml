@@ -11,5 +11,5 @@ absorb-able-blocks: "stone;coal_ore;iron_ore"
 # The World Name with all the Mines in.
 mines-world-name: "world"
 # Block Absorber
-ba-item: "bedrock"
+ba-item: "shulker_shell"
 ba-item-name: "&a&lBLOCK ABSORBER"
