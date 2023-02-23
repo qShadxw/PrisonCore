@@ -32,7 +32,8 @@ public class Econ {
                     PrisonCore.econ.depositPlayer(player, value * amount);
                     totalAmount = totalAmount + (value * amount);
                 }
-                player.sendMessage(Utils.Colour("&aYou've earned &c$" + totalAmount + "&a in the last " + plugin.getConfig().getInt("absorb-able-blocks-interval") + " &aSeconds"));
+                player.sendMessage(Utils.Colour(
+                        "&aYou've earned &c$" + totalAmount + "&a in the last " + plugin.getConfig().getInt("absorb-able-blocks-interval") + " &aSeconds"));
             }
         }, 0L, (plugin.getConfig().getInt("absorb-able-blocks-interval") * 20L));
 
