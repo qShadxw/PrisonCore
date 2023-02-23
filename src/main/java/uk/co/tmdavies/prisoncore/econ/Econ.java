@@ -31,7 +31,6 @@ public class Econ {
                     double value = InteractListener.blockValues.get(material);
                     PrisonCore.econ.depositPlayer(player, value * amount);
                 }
-                Bukkit.getConsoleSender().sendMessage("30 seconds");
             }
         }, 0L, (plugin.getConfig().getInt("absorb-able-blocks-interval") * 20L));
 
