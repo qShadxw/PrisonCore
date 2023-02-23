@@ -57,6 +57,8 @@ public class CoreCommand implements CommandExecutor {
             JoinListener.quitFormat = plugin.getConfig().getString("quit-format");
             InteractListener.enabledBlocks.addAll(Arrays.asList(Objects.requireNonNull(
                     plugin.getConfig().getString("absorb-able-blocks")).split(";")));
+            InteractListener.enabledBlocksValues.addAll(Arrays.asList(Objects.requireNonNull(
+                    plugin.getConfig().getString("absorb-able-blocks-values")).split(";")));
             InteractListener.worldName = plugin.getConfig().getString("mines-world-name");
 
             JoinListener.baItem = new ItemStack(Objects.requireNonNull(Material.getMaterial(Objects.requireNonNull(

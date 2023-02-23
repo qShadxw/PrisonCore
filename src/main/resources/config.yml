@@ -8,6 +8,8 @@ join-format: "&8(&a+&8) %vault_prefix%&7%player%%vault_suffix%"
 quit-format: "&8(&c-&8) %vault_prefix%&7%player%%vault_suffix%"
 # Split with ;
 absorb-able-blocks: "stone;coal_ore;iron_ore"
+absorb-able-blocks-values: "0.01;0.02;0.03"
+absorb-able-blocks-interval: 30 # In seconds
 # The World Name with all the Mines in.
 mines-world-name: "world"
 # Block Absorber

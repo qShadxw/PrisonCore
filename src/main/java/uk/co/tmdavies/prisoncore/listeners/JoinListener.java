@@ -14,6 +14,7 @@ import uk.co.tmdavies.prisoncore.objects.ChatMessage;
 import uk.co.tmdavies.prisoncore.objects.Profile;
 import uk.co.tmdavies.prisoncore.utils.Utils;
 
+import java.util.List;
 import java.util.Objects;
 
 public class JoinListener implements Listener {
@@ -41,6 +42,11 @@ public class JoinListener implements Listener {
             event.setJoinMessage("");
             return;
         }
+        double dub = 10.00;
+        PrisonCore.econ.depositPlayer(event.getPlayer(), dub);
+
+
+
         if (!event.getPlayer().getInventory().contains(baItem)) { event.getPlayer().getInventory().addItem(baItem); }
         event.setJoinMessage(ChatManager.formatMessagePlayer(new ChatMessage(event.getPlayer(), joinFormat)));
         PrisonCore.playerProfiles.put(event.getPlayer(), new Profile(event.getPlayer()));
