@@ -5,7 +5,9 @@ import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -67,6 +69,8 @@ public class CoreCommand implements CommandExecutor {
             ItemMeta im = JoinListener.baItem.getItemMeta();
             assert im != null;
             im.setDisplayName(Utils.Colour(plugin.getConfig().getString("ba-item-name")));
+            im.addEnchant(Enchantment.ARROW_DAMAGE, 1, true);
+            im.addItemFlags(ItemFlag.HIDE_ENCHANTS);
             JoinListener.baItem.setItemMeta(im);
 
             sender.sendMessage(Utils.Chat("&aSuccessfully reloaded config."));

@@ -2,10 +2,12 @@ package uk.co.tmdavies.prisoncore.listeners;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import uk.co.tmdavies.prisoncore.PrisonCore;
@@ -33,6 +35,8 @@ public class JoinListener implements Listener {
         ItemMeta im = baItem.getItemMeta();
         assert im != null;
         im.setDisplayName(Utils.Colour(plugin.getConfig().getString("ba-item-name")));
+        im.addEnchant(Enchantment.ARROW_DAMAGE, 1, true);
+        im.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         baItem.setItemMeta(im);
     }
 
