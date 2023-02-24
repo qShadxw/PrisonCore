@@ -11,6 +11,8 @@ import uk.co.tmdavies.prisoncore.listeners.InteractListener;
 import uk.co.tmdavies.prisoncore.objects.Profile;
 import uk.co.tmdavies.prisoncore.utils.Utils;
 
+import java.util.Map;
+
 
 public class Econ extends BukkitRunnable {
 
@@ -28,8 +30,9 @@ public class Econ extends BukkitRunnable {
         double totalAmount = 0.00;
         for (Player player : Bukkit.getOnlinePlayers()) {
             Profile profile = PrisonCore.playerProfiles.get(player);
-            for (Material material : profile.getAbsorbedBlocks().keySet()) {
-                int amount = profile.getAbsorbedBlocks().get(material);
+            for (Map.Entry entry : profile.getAbsorbedBlocks().entrySet()) {
+                Material material = (Material) entry.getKey();
+                int amount = (int) entry.getValue();
                 double value = InteractListener.blockValues.get(material);
                 profile.giveMoney(value * amount);
                 totalAmount = totalAmount + (value * amount);
