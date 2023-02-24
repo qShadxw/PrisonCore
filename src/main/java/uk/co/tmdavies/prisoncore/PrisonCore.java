@@ -12,6 +12,7 @@ import uk.co.tmdavies.prisoncore.listeners.*;
 import uk.co.tmdavies.prisoncore.objects.Config;
 import uk.co.tmdavies.prisoncore.objects.Logger;
 import uk.co.tmdavies.prisoncore.objects.Profile;
+import uk.co.tmdavies.prisoncore.utils.Utils;
 
 import java.util.HashMap;
 
@@ -45,7 +46,7 @@ public final class PrisonCore extends JavaPlugin {
         new InteractListener(this);
 
         // Block Absorber Runnable
-        Bukkit.getScheduler().runTaskTimer(this, () -> new Econ(this), 0L, (getConfig().getInt("absorb-able-blocks-interval") * 20L));
+        new Econ(this).runTaskTimer(this, 0L, (getConfig().getInt("absorb-able-blocks-interval") * 20L));
 
         if (!setupEconomy() ) {
             logger.error(Logger.Reason.ECONOMY, "Vault was not found. Please install Vault before using this plugin.");
