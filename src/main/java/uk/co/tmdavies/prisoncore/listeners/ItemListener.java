@@ -79,9 +79,7 @@ public class ItemListener implements Listener {
         ItemMeta pickaxeMeta = pickaxe.getItemMeta();
 
         if (pickaxeMeta == null) pickaxeMeta = Bukkit.getItemFactory().getItemMeta(pickaxe.getType());
-
-        assert pickaxeMeta != null;
-        pickaxeMeta.getEnchants().clear();
+        if (pickaxeMeta != null) pickaxeMeta.getEnchants().clear();
 
         for (Map.Entry entry : profile.getCurrentEnchantments().entrySet()) {
 
