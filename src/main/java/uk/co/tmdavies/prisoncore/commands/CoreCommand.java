@@ -88,12 +88,12 @@ public class CoreCommand implements CommandExecutor {
 
             if (!(sender instanceof Player)) return true;
 
-            //Bukkit.getServer().broadcastMessage(PrisonCore.playerProfiles.get((Player) sender).getAbsorbedBlocks().toString());
-
             Player player = (Player) sender;
             Profile profile = PrisonCore.playerProfiles.get(player);
 
-            player.sendMessage(profile.getCurrentEnchantments().toString());
+            player.sendMessage(Utils.Colour("&7Channels: &a" + profile.getActiveChannels().toString()));
+            player.sendMessage(Utils.Colour("&7Enchants: &a" + profile.getCurrentEnchantments().toString()));
+            player.sendMessage(Utils.Colour("&7Blocks: &a" + profile.getAbsorbedBlocks().toString()));
 
         }
 
