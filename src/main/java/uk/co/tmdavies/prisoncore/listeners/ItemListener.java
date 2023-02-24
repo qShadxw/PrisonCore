@@ -83,7 +83,7 @@ public class ItemListener implements Listener {
         for (Map.Entry entry : profile.getCurrentEnchantments().entrySet()) {
 
             assert pickaxeMeta != null;
-            pickaxeMeta.addEnchant((Enchantment) entry.getKey(), (int) entry.getKey(), true);
+            pickaxeMeta.addEnchant((Enchantment) entry.getKey(), (int) entry.getValue(), true);
 
         }
 

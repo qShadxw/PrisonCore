@@ -35,7 +35,7 @@ public class CustomEnchantCommand implements CommandExecutor {
 
                 for (Enchantment enchant : Enchantment.values()) {
 
-                    if (enchant.getKey().getKey().equalsIgnoreCase(args[0])) enchantment = enchant;
+                    if (enchant.getKey().getKey().equalsIgnoreCase(args[1])) enchantment = enchant;
 
                 }
 
@@ -47,9 +47,9 @@ public class CustomEnchantCommand implements CommandExecutor {
 
                 }
 
-                profile.addEnchantment(enchantment, Integer.parseInt(args[1]));
+                profile.addEnchantment(enchantment, Integer.parseInt(args[2]));
 
-                player.sendMessage(Utils.Colour("&8[&9CustomEnchants&8] &aSuccessfully added enchant. " + enchantment.getKey().getKey() + ": " + args[1] + "."));
+                player.sendMessage(Utils.Colour("&8[&9CustomEnchants&8] &aSuccessfully added enchant. " + enchantment.getKey().getKey() + ": " + args[2] + "."));
 
                 return true;
         }
