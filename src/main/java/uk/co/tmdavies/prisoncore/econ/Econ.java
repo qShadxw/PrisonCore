@@ -28,9 +28,9 @@ public class Econ extends BukkitRunnable {
     @Override
     public void run() {
         if (Bukkit.getOnlinePlayers().isEmpty()) return;
-        double totalAmount = 0.00;
         for (Player player : Bukkit.getOnlinePlayers()) {
             Profile profile = PrisonCore.playerProfiles.get(player);
+            double totalAmount = 0.00;
             for (Map.Entry entry : profile.getAbsorbedBlocks().entrySet()) {
                 Material material = (Material) entry.getKey();
                 int amount = (int) entry.getValue();
