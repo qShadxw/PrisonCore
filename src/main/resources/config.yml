@@ -13,6 +13,7 @@ mines-world-name: "world"
 ba-item: "shulker_shell"
 ba-item-name: "&a&lBLOCK ABSORBER"
 # Split with ;
-absorb-able-blocks: "stone;coal_ore;iron_ore"
-absorb-able-blocks-values: "0.01;0.02;0.03"
+absorb-able-blocks: "stone;deepslate;coal_ore;deepslate_coal_ore;iron_ore;deepslate_iron_ore;gold_ore;deepslate_gold_ore;redstone_ore;deepslate_redstone_ore;lapis_ore;deepslate_lapis_ore;diamond_ore;deepslate_diamond_ore"
+absorb-able-blocks-values: "0.1;0.1;0.2;0.2;0.3;0.3;0.4;0.4;0.5;0.5;0.6;0.6;0.7;0.7"
 absorb-able-blocks-interval: 30 # In seconds
+absorb-sell-message: "&a&l+&c&l$%total_amount%"

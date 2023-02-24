@@ -13,6 +13,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import uk.co.tmdavies.prisoncore.PrisonCore;
+import uk.co.tmdavies.prisoncore.econ.Econ;
 import uk.co.tmdavies.prisoncore.listeners.ChatListener;
 import uk.co.tmdavies.prisoncore.listeners.InteractListener;
 import uk.co.tmdavies.prisoncore.listeners.JoinListener;
@@ -62,6 +63,7 @@ public class CoreCommand implements CommandExecutor {
             ChatListener.chatFormat = plugin.getConfig().getString("chat-format");
             JoinListener.joinFormat = plugin.getConfig().getString("join-format");
             JoinListener.quitFormat = plugin.getConfig().getString("quit-format");
+            Econ.sellMessage = plugin.getConfig().getString("absorb-sell-message");
             InteractListener.enabledBlocks.addAll(Arrays.asList(Objects.requireNonNull(
                     plugin.getConfig().getString("absorb-able-blocks")).split(";")));
             InteractListener.enabledBlocksValues.addAll(Arrays.asList(Objects.requireNonNull(

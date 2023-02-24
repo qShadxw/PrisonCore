@@ -18,11 +18,12 @@ import java.util.Map;
 public class Econ extends BukkitRunnable {
 
     private final PrisonCore plugin;
+    public static String sellMessage = "";
+    public static double totalSellAmount = 0.00;
 
     public Econ(PrisonCore plugin) {
-
         this.plugin = plugin;
-
+        Econ.sellMessage = plugin.getConfig().getString("absorb-sell-message");
     }
 
     @Override
@@ -36,10 +37,10 @@ public class Econ extends BukkitRunnable {
                 int amount = (int) entry.getValue();
                 double value = InteractListener.blockValues.get(material);
                 profile.giveMoney(value * amount);
-                totalAmount = totalAmount + (value * amount);
+                totalSellAmount = totalSellAmount + (value * amount);
             }
             player.spigot().sendMessage(ChatMessageType.ACTION_BAR,
-                    TextComponent.fromLegacyText(Utils.Colour("&a&l+&c&l$" + totalAmount)));
+                    TextComponent.fromLegacyText(Utils.Colour(sellMessage.replaceAll("%total_amount%", String.valueOf(totalSellAmount)))));
         }
     }
 }
