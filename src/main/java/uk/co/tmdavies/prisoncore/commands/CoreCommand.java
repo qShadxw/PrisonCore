@@ -64,7 +64,7 @@ public class CoreCommand implements CommandExecutor {
             InteractListener.worldName = plugin.getConfig().getString("mines-world-name");
 
             JoinListener.baItem = new ItemStack(Objects.requireNonNull(Material.getMaterial(Objects.requireNonNull(
-                    plugin.getConfig().getString("ba-item")))));
+                    Objects.requireNonNull(plugin.getConfig().getString("ba-item")).toUpperCase()))));
 
             ItemMeta im = JoinListener.baItem.getItemMeta();
             assert im != null;

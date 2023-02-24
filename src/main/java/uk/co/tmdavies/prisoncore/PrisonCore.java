@@ -46,7 +46,7 @@ public final class PrisonCore extends JavaPlugin {
         new InteractListener(this);
 
         // Block Absorber Runnable
-        new Econ(this).runTaskTimer(this, 0L, (getConfig().getInt("absorb-able-blocks-interval") * 20L));
+        new Econ(this).runTaskTimerAsynchronously(this, 0L, (getConfig().getInt("absorb-able-blocks-interval") * 20L));
 
         if (!setupEconomy() ) {
             logger.error(Logger.Reason.ECONOMY, "Vault was not found. Please install Vault before using this plugin.");

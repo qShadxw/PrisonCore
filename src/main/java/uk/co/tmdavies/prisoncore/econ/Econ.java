@@ -1,16 +1,17 @@
 package uk.co.tmdavies.prisoncore.econ;
 
+import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitScheduler;
 import uk.co.tmdavies.prisoncore.PrisonCore;
 import uk.co.tmdavies.prisoncore.listeners.InteractListener;
 import uk.co.tmdavies.prisoncore.objects.Profile;
 import uk.co.tmdavies.prisoncore.utils.Utils;
 
+import java.awt.*;
 import java.util.Map;
 
 
@@ -37,8 +38,8 @@ public class Econ extends BukkitRunnable {
                 profile.giveMoney(value * amount);
                 totalAmount = totalAmount + (value * amount);
             }
-            player.sendMessage(Utils.Colour(
-                    "&aYou've earned &c$" + totalAmount + "&a in the last " + plugin.getConfig().getInt("absorb-able-blocks-interval") + " &aSeconds"));
+            player.spigot().sendMessage(ChatMessageType.ACTION_BAR,
+                    TextComponent.fromLegacyText(Utils.Colour("&a&l+&c&l$" + totalAmount)));
         }
     }
 }
