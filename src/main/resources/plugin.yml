@@ -8,6 +8,8 @@ description: Prison Core TTB Prison
 commands:
   core:
     description: Main Command
+  ce:
+    description: Custom Enchant Command
 permissions:
   prisoncore.admin:
     default: op

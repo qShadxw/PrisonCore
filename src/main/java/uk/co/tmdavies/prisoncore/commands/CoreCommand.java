@@ -16,9 +16,11 @@ import uk.co.tmdavies.prisoncore.PrisonCore;
 import uk.co.tmdavies.prisoncore.listeners.ChatListener;
 import uk.co.tmdavies.prisoncore.listeners.InteractListener;
 import uk.co.tmdavies.prisoncore.listeners.JoinListener;
+import uk.co.tmdavies.prisoncore.objects.Profile;
 import uk.co.tmdavies.prisoncore.utils.Utils;
 
 import java.util.Arrays;
+import java.util.Map;
 import java.util.Objects;
 
 public class CoreCommand implements CommandExecutor {
@@ -81,7 +83,16 @@ public class CoreCommand implements CommandExecutor {
         }
 
         if (args[0].equalsIgnoreCase("debug")) {
-            Bukkit.getServer().broadcastMessage(PrisonCore.playerProfiles.get((Player) sender).getAbsorbedBlocks().toString());
+
+            if (!(sender instanceof Player)) return true;
+
+            //Bukkit.getServer().broadcastMessage(PrisonCore.playerProfiles.get((Player) sender).getAbsorbedBlocks().toString());
+
+            Player player = (Player) sender;
+            Profile profile = PrisonCore.playerProfiles.get(player);
+
+            player.sendMessage(profile.getCurrentEnchantments().toString());
+
         }
 
         return true;
