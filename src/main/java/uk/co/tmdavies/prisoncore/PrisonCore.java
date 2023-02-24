@@ -56,8 +56,34 @@ public final class PrisonCore extends JavaPlugin {
 
         setupPermissions();
 
-
         papiEnabled = (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null);
+
+        // Do this last
+        if (Bukkit.getOnlinePlayers().isEmpty()) return;
+
+        for (Player player : Bukkit.getOnlinePlayers()) {
+
+            if (playerProfiles.containsKey(player)) continue;
+
+            playerProfiles.put(player, new Profile(player));
+
+        }
+    }
+
+    @Override
+    public void onDisable() {
+
+        if (Bukkit.getOnlinePlayers().isEmpty()) return;
+
+        for (Player player : Bukkit.getOnlinePlayers()) {
+
+            if (!playerProfiles.containsKey(player)) continue;
+
+            playerProfiles.get(player).saveData();
+            playerProfiles.remove(player);
+
+        }
+
     }
 
     private boolean setupEconomy() {
