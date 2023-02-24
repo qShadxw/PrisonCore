@@ -43,10 +43,12 @@ public final class PrisonCore extends JavaPlugin {
         new ItemListener(this);
         new BlockListener(this);
         new InteractListener(this);
-        new Econ(this);
+
+        // Block Absorber Runnable
+        Bukkit.getScheduler().runTaskTimer(this, () -> new Econ(this), 0L, (getConfig().getInt("absorb-able-blocks-interval") * 20L));
 
         if (!setupEconomy() ) {
-            Bukkit.getServer().getConsoleSender().sendMessage("Missing Dependency Vault.");
+            logger.error(Logger.Reason.ECONOMY, "Vault was not found. Please install Vault before using this plugin.");
             getServer().getPluginManager().disablePlugin(this);
             return;
         }

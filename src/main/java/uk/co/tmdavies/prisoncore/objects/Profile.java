@@ -174,6 +174,18 @@ public class Profile {
 
     }
 
+    public boolean giveMoney(double amount) {
+
+        return PrisonCore.econ.depositPlayer(this.player, amount).transactionSuccess();
+
+    }
+
+    public boolean takeMoney(double amount) {
+
+        return PrisonCore.econ.withdrawPlayer(this.player, amount).transactionSuccess();
+
+    }
+
     /**
      *
      * Saves data which is stored in ram.
