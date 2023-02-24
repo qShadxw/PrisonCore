@@ -54,6 +54,9 @@ public class CoreCommand implements CommandExecutor {
 
             plugin.reloadConfig();
 
+            InteractListener.enabledBlocksValues.clear();
+            InteractListener.enabledBlocks.clear();
+
             ChatListener.chatFormat = plugin.getConfig().getString("chat-format");
             JoinListener.joinFormat = plugin.getConfig().getString("join-format");
             JoinListener.quitFormat = plugin.getConfig().getString("quit-format");

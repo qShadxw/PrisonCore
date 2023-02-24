@@ -1,6 +1,7 @@
 # Permissions:
 #     - Reload Command: "prisoncore.admin"
 #     - Join Format: "prisoncore.join.vip"
+#     - Enchant Add: prisoncore.enchants.add"
 #
 chat-format: "%vault_prefix%%player%%vault_suffix% &8» %chat-colour%%message%"
 # Permission "prisoncore.join.vip"
