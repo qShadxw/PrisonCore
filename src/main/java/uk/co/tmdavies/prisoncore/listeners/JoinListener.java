@@ -53,7 +53,9 @@ public class JoinListener implements Listener {
 
         if (!event.getPlayer().getInventory().contains(baItem)) { event.getPlayer().getInventory().addItem(baItem); }
         event.setJoinMessage(ChatManager.formatMessagePlayer(new ChatMessage(event.getPlayer(), joinFormat)));
-        PrisonCore.playerProfiles.put(event.getPlayer(), new Profile(event.getPlayer()));
+        Profile profile = new Profile(event.getPlayer());
+        profile.updatePickaxe();
+        PrisonCore.playerProfiles.put(event.getPlayer(), profile);
     }
 
 

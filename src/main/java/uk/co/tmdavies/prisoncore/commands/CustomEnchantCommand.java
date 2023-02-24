@@ -22,6 +22,12 @@ public class CustomEnchantCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String s, @NotNull String[] args) {
+
+        if (!(sender instanceof Player)) return false;
+
+        Player player = (Player) sender;
+        Profile profile = PrisonCore.playerProfiles.get(player);
+
         switch (args[0]) {
             case "add":
                 if (!sender.hasPermission("prisoncore.enchants.add")) { return false; }
@@ -29,8 +35,7 @@ public class CustomEnchantCommand implements CommandExecutor {
                     sender.sendMessage(Utils.Colour("&cUsage: /ce add <Enchantment> <Level>"));
                     return false;
                 }
-                Player player = (Player) sender;
-                Profile profile = PrisonCore.playerProfiles.get(player);
+
                 Enchantment enchantment = null;
 
                 for (Enchantment enchant : Enchantment.values()) {
@@ -52,6 +57,15 @@ public class CustomEnchantCommand implements CommandExecutor {
                 player.sendMessage(Utils.Colour("&8[&9CustomEnchants&8] &aSuccessfully added enchant. " + enchantment.getKey().getKey() + ": " + args[2] + "."));
 
                 return true;
+
+            case "clear":
+
+                profile.clearEnchantments();
+
+                player.sendMessage(Utils.Colour("&8[&9CustomEnchants&8] &aSuccessfully clear enchants."));
+
+                return true;
+
         }
         return false;
     }

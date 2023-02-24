@@ -12,6 +12,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import uk.co.tmdavies.prisoncore.PrisonCore;
 import uk.co.tmdavies.prisoncore.listeners.custom.PlayerAcquiredItemEvent;
 import uk.co.tmdavies.prisoncore.objects.Profile;
+import uk.co.tmdavies.prisoncore.utils.Utils;
 
 import java.util.Map;
 import java.util.Objects;
@@ -79,11 +80,16 @@ public class ItemListener implements Listener {
         ItemMeta pickaxeMeta = pickaxe.getItemMeta();
 
         if (pickaxeMeta == null) pickaxeMeta = Bukkit.getItemFactory().getItemMeta(pickaxe.getType());
-        if (pickaxeMeta != null) pickaxeMeta.getEnchants().clear();
 
-        for (Map.Entry entry : profile.getCurrentEnchantments().entrySet()) {
+        for (Enchantment enchantment : pickaxeMeta.getEnchants().keySet()) pickaxeMeta.removeEnchant(enchantment);
 
-            pickaxeMeta.addEnchant((Enchantment) entry.getKey(), (int) entry.getValue(), true);
+        if (!profile.getCurrentEnchantments().isEmpty()) {
+
+            for (Map.Entry entry : profile.getCurrentEnchantments().entrySet()) {
+
+                pickaxeMeta.addEnchant((Enchantment) entry.getKey(), (int) entry.getValue(), true);
+
+            }
 
         }
 

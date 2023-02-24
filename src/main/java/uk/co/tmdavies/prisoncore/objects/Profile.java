@@ -1,8 +1,11 @@
 package uk.co.tmdavies.prisoncore.objects;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import uk.co.tmdavies.prisoncore.PrisonCore;
 import uk.co.tmdavies.prisoncore.managers.ChatManager;
 
@@ -86,6 +89,8 @@ public class Profile {
 
         this.currentEnchantments.put(enchantment, level);
 
+        updatePickaxe();
+
     }
 
     /**
@@ -99,6 +104,21 @@ public class Profile {
         if (!this.currentEnchantments.containsKey(enchantment)) return;
 
         this.currentEnchantments.remove(enchantment);
+
+        updatePickaxe();
+
+    }
+
+    /**
+     *
+     * Removes all the enchantments in the hashmap.
+     *
+     */
+    public void clearEnchantments() {
+
+        this.currentEnchantments.clear();
+
+        updatePickaxe();
 
     }
 
@@ -142,7 +162,44 @@ public class Profile {
 
     }
 
+    /**
+     *
+     * Updates all the current pickaxes in the player's
+     * inventory.
+     * <p>
+     * TODO: Only update the playable pickaxes.
+     *
+     */
+    public void updatePickaxe() {
 
+        for (int i = 0; i < this.player.getInventory().getSize(); i++) {
+
+            ItemStack itemStack = this.player.getInventory().getItem(i);
+
+            if (itemStack == null) continue;
+
+            if (itemStack.getType().getKey().getKey().endsWith("_pickaxe")) {
+
+                ItemMeta itemMeta = itemStack.getItemMeta();
+
+                if (itemMeta == null) continue;
+
+                for (Enchantment enchantment : itemMeta.getEnchants().keySet()) itemMeta.removeEnchant(enchantment);
+
+                if (!this.currentEnchantments.isEmpty())
+                    for (Map.Entry entry : this.currentEnchantments.entrySet())
+                        itemMeta.addEnchant((Enchantment) entry.getKey(), (int) entry.getValue(), true);
+
+                itemStack.setItemMeta(itemMeta);
+
+                this.player.getInventory().setItem(i, itemStack);
+
+            }
+
+        }
+
+
+    }
 
     /**
      *
