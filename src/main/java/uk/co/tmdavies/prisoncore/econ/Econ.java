@@ -36,6 +36,7 @@ public class Econ extends BukkitRunnable {
                 int amount = (int) entry.getValue();
                 double value = InteractListener.blockValues.get(material);
                 profile.giveMoney(value * amount);
+
                 totalAmount = totalAmount + (value * amount);
             }
             player.spigot().sendMessage(ChatMessageType.ACTION_BAR,
