@@ -3,7 +3,6 @@ package uk.co.tmdavies.prisoncore.listeners;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
@@ -25,7 +24,7 @@ public class InteractListener implements Listener {
 
     public static ArrayList<String> enabledBlocks = new ArrayList<>();
     public static ArrayList<String> enabledBlocksValues = new ArrayList<>();
-    public static HashMap<Material, Double> blockValues = new HashMap<Material, Double>();
+    public static HashMap<Material, Double> blockValues = new HashMap<>();
     public static String worldName;
     private final String baItem;
     public static Inventory absorbInventory;
@@ -92,7 +91,7 @@ public class InteractListener implements Listener {
         if (item.getItemMeta() == null) { return; }
         ItemMeta itemM = item.getItemMeta();
         if (!itemM.getPersistentDataContainer().has(antiInventoryTakeKey, PersistentDataType.STRING)) { return; }
-        if (Boolean.valueOf(itemM.getPersistentDataContainer().get(antiInventoryTakeKey, PersistentDataType.STRING))) { return; }
+        if (Boolean.parseBoolean(itemM.getPersistentDataContainer().get(antiInventoryTakeKey, PersistentDataType.STRING))) { return; }
         event.setCancelled(true);
     }
 
