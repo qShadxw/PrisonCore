@@ -1,6 +1,5 @@
 package uk.co.tmdavies.prisoncore.commands;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -21,7 +20,6 @@ import uk.co.tmdavies.prisoncore.objects.Profile;
 import uk.co.tmdavies.prisoncore.utils.Utils;
 
 import java.util.Arrays;
-import java.util.Map;
 import java.util.Objects;
 
 public class CoreCommand implements CommandExecutor {
