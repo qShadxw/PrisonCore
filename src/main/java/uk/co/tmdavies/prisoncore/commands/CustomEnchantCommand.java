@@ -5,6 +5,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import uk.co.tmdavies.prisoncore.PrisonCore;
 import uk.co.tmdavies.prisoncore.objects.Profile;
@@ -14,8 +15,11 @@ import java.util.Objects;
 
 public class CustomEnchantCommand implements CommandExecutor {
 
+    Plugin plugin;
+
     public CustomEnchantCommand(PrisonCore plugin) {
 
+        this.plugin = plugin;
         Objects.requireNonNull(plugin.getCommand("ce")).setExecutor(this);
 
     }
@@ -46,7 +50,7 @@ public class CustomEnchantCommand implements CommandExecutor {
 
                 if (enchantment == null) {
 
-                    player.sendMessage(Utils.Colour("&8[&9CustomEnchants&8] &cIncorrect Enchantment."));
+                    player.sendMessage(Utils.Colour(plugin.getConfig().getString("enchants.incorrect-enchant")));
 
                     return false;
 
@@ -54,7 +58,9 @@ public class CustomEnchantCommand implements CommandExecutor {
 
                 profile.addEnchantment(enchantment, Integer.parseInt(args[2]));
 
-                player.sendMessage(Utils.Colour("&8[&9CustomEnchants&8] &aSuccessfully added enchant. " + enchantment.getKey().getKey() + ": " + args[2] + "."));
+                player.sendMessage(Utils.Colour(Objects.requireNonNull(plugin.getConfig().getString("enchants.add-enchant"))
+                        .replaceAll("%enchantment%", enchantment.getKey().getKey()))
+                        .replaceAll("%amount%", args[2]));
 
                 return true;
 
@@ -62,7 +68,7 @@ public class CustomEnchantCommand implements CommandExecutor {
 
                 profile.clearEnchantments();
 
-                player.sendMessage(Utils.Colour("&8[&9CustomEnchants&8] &aSuccessfully clear enchants."));
+                player.sendMessage(Utils.Colour(plugin.getConfig().getString("enchants.clear-enchant")));
 
                 return true;
 

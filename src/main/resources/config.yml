@@ -17,3 +17,10 @@ absorb-able-blocks: "stone;deepslate;coal_ore;deepslate_coal_ore;iron_ore;deepsl
 absorb-able-blocks-values: "0.1;0.1;0.2;0.2;0.3;0.3;0.4;0.4;0.5;0.5;0.6;0.6;0.7;0.7"
 absorb-able-blocks-interval: 30 # In seconds
 absorb-sell-message: "&a&l+&c&l$%total_amount%"
+#
+#     MESSAGES
+#
+enchants:
+  incorrect-enchant: "&8[&9CE&8] &cIncorrect Enchantment."
+  add-enchant: "&8[&9CE&8] &aSuccessfully added enchant. %enchantment%: %amount%."
+  clear-enchant: "&8[&9CE&8] &aSuccessfully cleared enchants."

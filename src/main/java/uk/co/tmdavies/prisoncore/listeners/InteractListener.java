@@ -29,7 +29,7 @@ public class InteractListener implements Listener {
     private final String baItem;
     public static Inventory absorbInventory;
     private final Plugin plugin = PrisonCore.getPlugin(PrisonCore.class);
-    public NamespacedKey antiInventoryTakeKey = new NamespacedKey(plugin, "anti-inventory-takable");
+    public NamespacedKey antiInventoryTakeKey = new NamespacedKey(plugin, "anti-inventory-takeable");
 
     public InteractListener(PrisonCore plugin) {
 
