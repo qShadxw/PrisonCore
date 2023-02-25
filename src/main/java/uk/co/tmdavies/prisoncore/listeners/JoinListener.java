@@ -2,6 +2,7 @@ package uk.co.tmdavies.prisoncore.listeners;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -10,6 +11,9 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.persistence.PersistentDataType;
+import org.bukkit.plugin.Plugin;
 import uk.co.tmdavies.prisoncore.PrisonCore;
 import uk.co.tmdavies.prisoncore.managers.ChatManager;
 import uk.co.tmdavies.prisoncore.objects.ChatMessage;
@@ -23,6 +27,7 @@ public class JoinListener implements Listener {
 
     public static String joinFormat;
     public static String quitFormat;
+
 
     public static ItemStack baItem = new ItemStack(Material.STONE);
 

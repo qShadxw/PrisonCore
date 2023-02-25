@@ -2,6 +2,7 @@ package uk.co.tmdavies.prisoncore.listeners;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -11,6 +12,9 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.persistence.PersistentDataType;
+import org.bukkit.plugin.Plugin;
 import uk.co.tmdavies.prisoncore.PrisonCore;
 import uk.co.tmdavies.prisoncore.objects.Profile;
 import uk.co.tmdavies.prisoncore.utils.Utils;
@@ -25,6 +29,8 @@ public class InteractListener implements Listener {
     public static String worldName;
     private final String baItem;
     public static Inventory absorbInventory;
+    private final Plugin plugin = PrisonCore.getPlugin(PrisonCore.class);
+    public NamespacedKey antiInventoryTakeKey = new NamespacedKey(plugin, "anti-inventory-takable");
 
     public InteractListener(PrisonCore plugin) {
 
@@ -71,6 +77,8 @@ public class InteractListener implements Listener {
             assert itemM != null;
             itemM.setDisplayName(Utils.Colour("&7&l" + item.getType().toString().toUpperCase()));
             itemM.setLore(Collections.singletonList(Utils.Colour("&a&lx" + pro.getAbsorbedBlocks().get(material))));
+            PersistentDataContainer dataContainer = itemM.getPersistentDataContainer();
+            dataContainer.set(antiInventoryTakeKey, PersistentDataType.STRING, "false");
             item.setItemMeta(itemM);
             absorbInventory.addItem(item);
         }
@@ -79,7 +87,13 @@ public class InteractListener implements Listener {
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
-        // Add the ability to stop players taking items out of inventories.
+        if (event.getCurrentItem() == null) { return; }
+        ItemStack item = event.getCurrentItem();
+        if (item.getItemMeta() == null) { return; }
+        ItemMeta itemM = item.getItemMeta();
+        if (!itemM.getPersistentDataContainer().has(antiInventoryTakeKey, PersistentDataType.STRING)) { return; }
+        if (Boolean.valueOf(itemM.getPersistentDataContainer().get(antiInventoryTakeKey, PersistentDataType.STRING))) { return; }
+        event.setCancelled(true);
     }
 
 }

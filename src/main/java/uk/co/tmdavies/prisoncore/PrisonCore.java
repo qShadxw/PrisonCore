@@ -3,6 +3,7 @@ package uk.co.tmdavies.prisoncore;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
+import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -26,6 +27,7 @@ public final class PrisonCore extends JavaPlugin {
     public static Logger logger;
     public static Config itemCache;
     public static Config profileCache;
+
 
     @Override
     public void onLoad() {
