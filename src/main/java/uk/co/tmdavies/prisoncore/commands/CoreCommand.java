@@ -72,7 +72,11 @@ public class CoreCommand implements CommandExecutor {
 
             JoinListener.baItem = new ItemStack(Objects.requireNonNull(Material.getMaterial(Objects.requireNonNull(
                     Objects.requireNonNull(plugin.getConfig().getString("ba-item")).toUpperCase()))));
+            CustomEnchantCommand.clearEnchantmentMessage = plugin.getConfig().getString("enchants.clear-enchant");
+            CustomEnchantCommand.addEnchantmentMessage = plugin.getConfig().getString("enchants.add-enchant");
+            CustomEnchantCommand.incorrectEnchantmentMessage = plugin.getConfig().getString("enchants.incorrect-enchant");
 
+            // Block Absorber
             ItemMeta im = JoinListener.baItem.getItemMeta();
             assert im != null;
             im.setDisplayName(Utils.Colour(plugin.getConfig().getString("ba-item-name")));
@@ -80,6 +84,7 @@ public class CoreCommand implements CommandExecutor {
             im.addItemFlags(ItemFlag.HIDE_ENCHANTS);
             JoinListener.baItem.setItemMeta(im);
 
+            // Finished Reload
             sender.sendMessage(Utils.Chat("&aSuccessfully reloaded config."));
 
         }

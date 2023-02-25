@@ -16,10 +16,16 @@ import java.util.Objects;
 public class CustomEnchantCommand implements CommandExecutor {
 
     Plugin plugin;
+    public static String incorrectEnchantmentMessage;
+    public static String addEnchantmentMessage;
+    public static String clearEnchantmentMessage;
 
     public CustomEnchantCommand(PrisonCore plugin) {
 
         this.plugin = plugin;
+        incorrectEnchantmentMessage = plugin.getConfig().getString("enchants.incorrect-enchant");
+        addEnchantmentMessage = plugin.getConfig().getString("enchants.add-enchant");
+        clearEnchantmentMessage = plugin.getConfig().getString("enchants.clear-enchant");
         Objects.requireNonNull(plugin.getCommand("ce")).setExecutor(this);
 
     }
@@ -50,7 +56,7 @@ public class CustomEnchantCommand implements CommandExecutor {
 
                 if (enchantment == null) {
 
-                    player.sendMessage(Utils.Colour(plugin.getConfig().getString("enchants.incorrect-enchant")));
+                    player.sendMessage(Utils.Colour(incorrectEnchantmentMessage));
 
                     return false;
 
@@ -58,7 +64,7 @@ public class CustomEnchantCommand implements CommandExecutor {
 
                 profile.addEnchantment(enchantment, Integer.parseInt(args[2]));
 
-                player.sendMessage(Utils.Colour(Objects.requireNonNull(plugin.getConfig().getString("enchants.add-enchant"))
+                player.sendMessage(Utils.Colour(Objects.requireNonNull(addEnchantmentMessage)
                         .replaceAll("%enchantment%", enchantment.getKey().getKey()))
                         .replaceAll("%amount%", args[2]));
 
@@ -68,7 +74,7 @@ public class CustomEnchantCommand implements CommandExecutor {
 
                 profile.clearEnchantments();
 
-                player.sendMessage(Utils.Colour(plugin.getConfig().getString("enchants.clear-enchant")));
+                player.sendMessage(Utils.Colour(clearEnchantmentMessage));
 
                 return true;
 
