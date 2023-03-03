@@ -4,6 +4,7 @@ import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
@@ -11,6 +12,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import uk.co.tmdavies.prisoncore.PrisonCore;
 import uk.co.tmdavies.prisoncore.econ.Econ;
 import uk.co.tmdavies.prisoncore.listeners.ChatListener;
@@ -19,10 +21,12 @@ import uk.co.tmdavies.prisoncore.listeners.JoinListener;
 import uk.co.tmdavies.prisoncore.objects.Profile;
 import uk.co.tmdavies.prisoncore.utils.Utils;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 
-public class CoreCommand implements CommandExecutor {
+public class CoreCommand implements CommandExecutor, TabCompleter {
 
     public CoreCommand(PrisonCore plugin) {
 
@@ -104,4 +108,12 @@ public class CoreCommand implements CommandExecutor {
 
     }
 
+    @Nullable
+    @Override
+    public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String string, @NotNull String[] args) {
+
+        if (args.length == 1) return List.of("reload", "debug");
+
+        return new ArrayList<>();
+    }
 }

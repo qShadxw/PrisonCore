@@ -3,17 +3,21 @@ package uk.co.tmdavies.prisoncore.commands;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import uk.co.tmdavies.prisoncore.PrisonCore;
 import uk.co.tmdavies.prisoncore.objects.Profile;
 import uk.co.tmdavies.prisoncore.utils.Utils;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
-public class CustomEnchantCommand implements CommandExecutor {
+public class CustomEnchantCommand implements CommandExecutor, TabCompleter {
 
     Plugin plugin;
     public static String incorrectEnchantmentMessage;
@@ -38,7 +42,7 @@ public class CustomEnchantCommand implements CommandExecutor {
         Player player = (Player) sender;
         Profile profile = PrisonCore.playerProfiles.get(player);
 
-        switch (args[0]) {
+        switch (args[0].toLowerCase()) {
             case "add":
                 if (!sender.hasPermission("prisoncore.enchants.add")) { return false; }
                 if (args.length != 3) {
@@ -80,5 +84,36 @@ public class CustomEnchantCommand implements CommandExecutor {
 
         }
         return false;
+    }
+
+    @Nullable
+    @Override
+    public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String string, @NotNull String[] args) {
+
+        if (args.length == 1) return List.of("add", "clear");
+        if (args.length == 2) {
+
+            if (args[0].equalsIgnoreCase("add")) {
+
+                List<String> toReturn = new ArrayList<>();
+
+                for (Enchantment enchantment : Enchantment.values()) toReturn.add(enchantment.getKey().getKey());
+
+                return toReturn;
+
+            }
+
+        }
+        if (args.length == 3 && args[0].equalsIgnoreCase("add")) {
+
+            List<String> toReturn = new ArrayList<>();
+
+            for (int i = 0; i < 101; i++) toReturn.add(String.valueOf(i));
+
+            return toReturn;
+
+        }
+
+        return new ArrayList<>();
     }
 }
