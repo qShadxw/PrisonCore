@@ -32,7 +32,7 @@ public class Logger {
 
     public void log(Reason reason, String message) {
 
-        this.logger.info(reason.getColour() + reason.getPrefix() + Utils.Colour(" " + message));
+        this.logger.info(Utils.Colour(reason.getColour() + reason.getPrefix() + " " + message));
 
     }
 

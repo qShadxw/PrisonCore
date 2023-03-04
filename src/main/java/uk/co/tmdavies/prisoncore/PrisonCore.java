@@ -3,7 +3,7 @@ package uk.co.tmdavies.prisoncore;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
-import org.bukkit.NamespacedKey;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -12,21 +12,23 @@ import uk.co.tmdavies.prisoncore.commands.CustomEnchantCommand;
 import uk.co.tmdavies.prisoncore.econ.Econ;
 import uk.co.tmdavies.prisoncore.listeners.*;
 import uk.co.tmdavies.prisoncore.objects.Config;
+import uk.co.tmdavies.prisoncore.objects.Gang;
 import uk.co.tmdavies.prisoncore.objects.Logger;
 import uk.co.tmdavies.prisoncore.objects.Profile;
-import uk.co.tmdavies.prisoncore.utils.Utils;
 
 import java.util.HashMap;
 
 public final class PrisonCore extends JavaPlugin {
 
     public static HashMap<Player, Profile> playerProfiles;
+    public static HashMap<OfflinePlayer, Gang> gangCache;
     public static boolean papiEnabled;
     public static Permission perms;
     public static Economy econ = null;
     public static Logger logger;
-    public static Config itemCache;
-    public static Config profileCache;
+    public static Config itemConfig;
+    public static Config profileConfig;
+    public static Config gangConfig;
 
 
     @Override
@@ -34,8 +36,10 @@ public final class PrisonCore extends JavaPlugin {
         logger = new Logger();
         saveDefaultConfig();
         playerProfiles = new HashMap<>();
-        itemCache = new Config(PrisonCore.class, "itemcache.yml", false, true);
-        profileCache = new Config(PrisonCore.class, "profiles.yml", false, true);
+        gangCache = new HashMap<>();
+        itemConfig = new Config(PrisonCore.class, "itemcache.yml", false, true);
+        profileConfig = new Config(PrisonCore.class, "profiles.yml", false, true);
+        gangConfig = new Config(PrisonCore.class, "gangs.yml", false, true);
     }
 
     @Override
@@ -63,6 +67,8 @@ public final class PrisonCore extends JavaPlugin {
 
         papiEnabled = (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null);
 
+        logger.startUp();
+
         // Do this last
         if (Bukkit.getOnlinePlayers().isEmpty()) return;
 
@@ -73,6 +79,7 @@ public final class PrisonCore extends JavaPlugin {
             playerProfiles.put(player, new Profile(player));
 
         }
+
     }
 
     @Override

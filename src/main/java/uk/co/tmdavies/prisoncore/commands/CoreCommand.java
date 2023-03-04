@@ -31,6 +31,7 @@ public class CoreCommand implements CommandExecutor, TabCompleter {
     public CoreCommand(PrisonCore plugin) {
 
         Objects.requireNonNull(plugin.getCommand("core")).setExecutor(this);
+        Objects.requireNonNull(plugin.getCommand("core")).setTabCompleter(this);
 
     }
 
