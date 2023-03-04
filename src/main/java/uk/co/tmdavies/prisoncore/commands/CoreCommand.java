@@ -103,6 +103,8 @@ public class CoreCommand implements CommandExecutor, TabCompleter {
             player.sendMessage(Utils.Colour("&7Enchants: &a" + profile.getCurrentEnchantments().toString()));
             player.sendMessage(Utils.Colour("&7Blocks: &a" + profile.getAbsorbedBlocks().toString()));
 
+            player.sendMessage(Utils.Colour("&7&o" + profile.toString()));
+
         }
 
         return true;

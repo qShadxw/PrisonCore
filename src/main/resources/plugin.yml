@@ -10,6 +10,8 @@ commands:
     description: Main Command
   ce:
     description: Custom Enchant Command
+  gang:
+    description: Gang Command
 permissions:
   prisoncore.admin:
     default: op

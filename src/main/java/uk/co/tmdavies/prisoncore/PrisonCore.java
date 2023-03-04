@@ -9,6 +9,7 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import uk.co.tmdavies.prisoncore.commands.CoreCommand;
 import uk.co.tmdavies.prisoncore.commands.CustomEnchantCommand;
+import uk.co.tmdavies.prisoncore.commands.GangCommand;
 import uk.co.tmdavies.prisoncore.econ.Econ;
 import uk.co.tmdavies.prisoncore.listeners.*;
 import uk.co.tmdavies.prisoncore.objects.Config;
@@ -47,6 +48,7 @@ public final class PrisonCore extends JavaPlugin {
         // Commands
         new CoreCommand(this);
         new CustomEnchantCommand(this);
+        new GangCommand(this);
         // Listeners
         new ChatListener(this);
         new JoinListener(this);

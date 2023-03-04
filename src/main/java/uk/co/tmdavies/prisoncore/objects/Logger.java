@@ -59,7 +59,8 @@ public class Logger {
         SQL("[SQL] ", ChatColor.GOLD),
         KEY("[Key] ", ChatColor.DARK_PURPLE),
         API("[API] ", ChatColor.GREEN),
-        ECONOMY("[Eco] ", ChatColor.AQUA);
+        ECONOMY("[Eco] ", ChatColor.AQUA),
+        PROFILE("[Profile] ", ChatColor.DARK_AQUA);
 
         private String prefix;
         private ChatColor colour;

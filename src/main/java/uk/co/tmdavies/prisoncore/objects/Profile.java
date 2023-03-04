@@ -22,6 +22,8 @@ public class Profile {
 
     public Profile(Player player) {
 
+        PrisonCore.logger.log(Logger.Reason.PROFILE, "Constructor: " + player.getName());
+
         this.player = player;
         this.activeChannels = new ArrayList<>();
         this.currentEnchantments = new HashMap<>();
@@ -30,6 +32,8 @@ public class Profile {
         this.activeChannels.addAll(List.of(ChatManager.Channel.values()));
 
         loadData();
+
+        PrisonCore.logger.log(Logger.Reason.PROFILE, "Finished Constructor: " + player.getName());
 
     }
 
@@ -317,6 +321,57 @@ public class Profile {
             this.absorbedBlocks.put(material, amount);
 
         }
+
+    }
+
+    @Override
+    public String toString() {
+
+        // Player, ActiveChannels, CurrentEnchantments, AbsorbedBlocks
+
+        String channels = null;
+        String enchantments = null;
+        String blocks = null;
+
+        if (!this.activeChannels.isEmpty()) {
+
+            StringBuilder builder = new StringBuilder();
+
+            this.activeChannels.forEach(channel -> builder.append(channel.toString()).append(", "));
+
+            channels = builder.substring(0, builder.length() - 2);
+        }
+
+        if (!this.currentEnchantments.isEmpty()) {
+
+            StringBuilder builder = new StringBuilder();
+
+            this.currentEnchantments.forEach((enchantment, level) -> {
+                builder.append(enchantment.getKey().getKey()).append("-").append(level).append(", ");
+            });
+
+            enchantments = builder.substring(0, builder.length() - 2);
+
+        }
+
+        if (!this.absorbedBlocks.isEmpty()) {
+
+            StringBuilder builder = new StringBuilder();
+
+            this.absorbedBlocks.forEach((material, amount) -> {
+                builder.append(material.getKey().getKey()).append("-").append(amount).append(", ");
+            });
+
+            blocks = builder.substring(0, builder.length() - 2);
+
+        }
+
+        return "Profile[PlayerUUID='" + this.player.getUniqueId().toString() +
+                "', PlayerName='" + this.player.getName() +
+                "', ActiveChannels='" + (channels != null ? channels : "") +
+                "', CurrentEnchantments='" + (enchantments != null ? enchantments : "") +
+                "', AbsorbedBlocks='" + (blocks != null ? blocks : "") +
+                "']";
 
     }
 

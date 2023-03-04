@@ -12,6 +12,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import uk.co.tmdavies.prisoncore.PrisonCore;
 import uk.co.tmdavies.prisoncore.objects.Gang;
+import uk.co.tmdavies.prisoncore.objects.Logger;
 import uk.co.tmdavies.prisoncore.utils.GangUtils;
 import uk.co.tmdavies.prisoncore.utils.Utils;
 
@@ -35,6 +36,13 @@ public class GangCommand implements CommandExecutor, TabCompleter {
         if (!sender.hasPermission("prisoncore.gang")) {
 
             sender.sendMessage(Utils.Chat("&cYou do not have permission to execute this command."));
+            return true;
+
+        }
+
+        if (args.length == 0) {
+
+            sender.sendMessage(getSyntax());
             return true;
 
         }
@@ -105,6 +113,45 @@ public class GangCommand implements CommandExecutor, TabCompleter {
                 gang.disband();
                 GangUtils.removeGang(gang);
             }
+            case "status" -> {
+                if (isConsole) {
+
+                    sender.sendMessage(Utils.Chat("&cOnly players may execute this command."));
+                    break;
+
+                }
+                player = (Player) sender;
+                gang = GangUtils.getGangByMember(player);
+
+                if (gang == null) {
+
+                    sender.sendMessage(Utils.Chat("&cYou are not in a gang."));
+                    break;
+
+                }
+
+                OfflinePlayer temp = Bukkit.getOfflinePlayer(gang.getGangBoss());
+
+                String boss = temp.isOnline() ? temp.getPlayer().getDisplayName() : temp.getName();
+
+                StringBuilder underbosses = new StringBuilder();
+                gang.getGangUnderbosses().forEach(uuid -> {
+                    OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(uuid);
+                    underbosses.append(offlinePlayer.isOnline() ? offlinePlayer.getPlayer().getDisplayName() : offlinePlayer.getName()).append(", ");
+                });
+
+                StringBuilder members = new StringBuilder();
+                gang.getGangMembers().forEach(uuid -> {
+                    OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(uuid);
+                    members.append(offlinePlayer.isOnline() ? offlinePlayer.getPlayer().getDisplayName() : offlinePlayer.getName()).append(", ");
+                });
+
+                player.sendMessage(Utils.Colour("&8+--------+ &9" + gang.getGangName() + " &8+--------+"));
+                player.sendMessage(Utils.Colour("&7Gang Boss: " + boss));
+                player.sendMessage(Utils.Colour("&7Gang Under Bosses: " + (underbosses.length() > 0 ? (underbosses.substring(0, underbosses.length() - 2)) : "")));
+                player.sendMessage(Utils.Colour("&7Gang Members: " + (members.length() > 0 ? (members.substring(0, members.length() - 2)) : "")));
+
+            }
             case "invite" -> {
                 if (isConsole) {
 
@@ -136,6 +183,12 @@ public class GangCommand implements CommandExecutor, TabCompleter {
                 if (target == null || !target.isOnline()) {
 
                     player.sendMessage(Utils.Chat("&c" + args[1] + " is offline."));
+                    break;
+
+                }
+                if (gang.hasMember(target)) {
+
+                    player.sendMessage(Utils.Chat("&cPlayer is already in " + gang.getGangName() + "."));
                     break;
 
                 }
@@ -238,6 +291,7 @@ public class GangCommand implements CommandExecutor, TabCompleter {
                 }
                 if (args.length != 2) {
 
+                    PrisonCore.logger.error(Logger.Reason.GENERIC, "Args");
                     sender.sendMessage(getSyntax());
                     break;
 
@@ -251,6 +305,7 @@ public class GangCommand implements CommandExecutor, TabCompleter {
 
                     // Disguise Command.
                     sender.sendMessage(getSyntax());
+                    PrisonCore.logger.error(Logger.Reason.GENERIC, exception.toString());
                     break;
 
                 }
@@ -258,6 +313,7 @@ public class GangCommand implements CommandExecutor, TabCompleter {
                 gang = GangUtils.getGangById(gangId);
                 if (gang == null) {
 
+                    PrisonCore.logger.error(Logger.Reason.GENERIC, "Gang Null");
                     player.sendMessage(getSyntax());
                     break;
 
@@ -265,6 +321,7 @@ public class GangCommand implements CommandExecutor, TabCompleter {
                 if (!gang.getInvites().asMap().containsKey(player)) {
 
                     // Disguise Command.
+                    PrisonCore.logger.error(Logger.Reason.GENERIC, "Cache asMap");
                     sender.sendMessage(getSyntax());
                     break;
 
@@ -283,7 +340,7 @@ public class GangCommand implements CommandExecutor, TabCompleter {
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String string, @NotNull String[] args) {
         switch (args.length) {
             case 1 -> {
-                return List.of("create", "disband", "invite", "kick", "promote");
+                return List.of("create", "disband", "invite", "kick", "promote", "status");
             }
             case 2 -> {
                 List<String> toReturn = new ArrayList<>();
@@ -299,8 +356,8 @@ public class GangCommand implements CommandExecutor, TabCompleter {
 
                         if (gang == null) return new ArrayList<>();
 
-                        gang.getGangMembers().forEach(member -> toReturn.add(member.getName()));
-                        gang.getGangUnderbosses().forEach(underboss -> toReturn.add(underboss.getName()));
+                        gang.getGangMembers().forEach(member -> toReturn.add(Objects.requireNonNull(Bukkit.getPlayer(member)).getName()));
+                        gang.getGangUnderbosses().forEach(underboss -> toReturn.add(Objects.requireNonNull(Bukkit.getPlayer(underboss)).getName()));
 
                         return toReturn;
                     }
@@ -318,7 +375,7 @@ public class GangCommand implements CommandExecutor, TabCompleter {
 
     public String getSyntax() {
 
-        return Utils.Chat("&cUsage: /gang <create|disband|invite|kick|promote> <gangName|player> <rank>");
+        return Utils.Chat("&cUsage: /gang <create|disband|invite|kick|promote> <gangName|player>");
 
     }
 

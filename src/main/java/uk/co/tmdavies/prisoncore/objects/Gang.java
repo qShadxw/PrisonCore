@@ -4,12 +4,14 @@ import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import uk.co.tmdavies.prisoncore.PrisonCore;
 import uk.co.tmdavies.prisoncore.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -17,18 +19,29 @@ public class Gang {
 
     private final UUID gangId;
     private String gangName;
-    private Player gangBoss;
-    private List<Player> gangUnderbosses;
-    private List<Player> gangMembers;
-    private Cache<Player, Gang> inviteCache = CacheBuilder.newBuilder()
+    private UUID gangBoss;
+    private final List<UUID> gangUnderbosses;
+    private final List<UUID> gangMembers;
+    private final Cache<Player, Gang> inviteCache = CacheBuilder.newBuilder()
             .expireAfterWrite(30, TimeUnit.SECONDS)
             .maximumSize(5)
             .build();
 
     public Gang(UUID gangId) {
 
-        // Load from Config
+        Config config = PrisonCore.gangConfig;
+        this.gangUnderbosses = new ArrayList<>();
+        this.gangMembers = new ArrayList<>();
+
         this.gangId = gangId;
+        this.gangName = config.getString("Gangs." + this.gangId.toString() + ".Name");
+        this.gangBoss = UUID.fromString(config.getString("Gangs." + this.gangId.toString() + ".Boss"));
+
+        config.getStringList("Gangs." + this.gangId.toString() + ".Underbosses")
+                .forEach(uuid -> this.gangUnderbosses.add(UUID.fromString(uuid)));
+
+        config.getStringList("Gangs." + this.gangId.toString() + ".Members")
+                .forEach(uuid -> this.gangMembers.add(UUID.fromString(uuid)));
 
     }
 
@@ -36,7 +49,7 @@ public class Gang {
 
         this.gangId = UUID.randomUUID();
         this.gangName = name;
-        this.gangBoss = gangBoss;
+        this.gangBoss = gangBoss.getUniqueId();
         this.gangUnderbosses = new ArrayList<>();
         this.gangMembers = new ArrayList<>();
 
@@ -74,7 +87,7 @@ public class Gang {
      *
      * @return Player
      */
-    public Player getGangBoss() {
+    public UUID getGangBoss() {
 
         return this.gangBoss;
 
@@ -84,9 +97,9 @@ public class Gang {
      *
      * Get Gang Underbosses.
      *
-     * @return List < Player >
+     * @return List < UUID >
      */
-    public List<Player> getGangUnderbosses() {
+    public List<UUID> getGangUnderbosses() {
 
         return this.gangUnderbosses;
 
@@ -96,9 +109,9 @@ public class Gang {
      *
      * Get Gang Members.
      *
-     * @return List < Player >
+     * @return List < UUID >
      */
-    public List<Player> getGangMembers() {
+    public List<UUID> getGangMembers() {
 
         return this.gangMembers;
 
@@ -140,11 +153,11 @@ public class Gang {
      */
     public boolean setGangBoss(Player gangBoss) {
 
-        if (this.gangBoss == gangBoss) return false;
-        if (!this.gangUnderbosses.contains(gangBoss) || !this.gangMembers.contains(gangBoss)) return false;
+        if (Objects.equals(this.gangBoss.toString(), gangBoss.getUniqueId().toString())) return false;
+        if (!this.gangUnderbosses.contains(gangBoss.getUniqueId()) || !this.gangMembers.contains(gangBoss.getUniqueId())) return false;
 
         this.gangMembers.add(this.gangBoss);
-        this.gangBoss = gangBoss;
+        this.gangBoss = gangBoss.getUniqueId();
 
         return true;
 
@@ -161,10 +174,10 @@ public class Gang {
      */
     public boolean addGangUnderboss(Player underBoss) {
 
-        if (this.gangBoss == underBoss) return false;
-        if (this.gangUnderbosses.contains(gangBoss) || !this.gangMembers.contains(gangBoss)) return false;
+        if (Objects.equals(this.gangBoss.toString(), underBoss.getUniqueId().toString())) return false;
+        if (this.gangUnderbosses.contains(underBoss.getUniqueId()) || !this.gangMembers.contains(underBoss.getUniqueId())) return false;
 
-        return this.gangUnderbosses.add(underBoss);
+        return this.gangUnderbosses.add(underBoss.getUniqueId());
 
     }
 
@@ -179,7 +192,7 @@ public class Gang {
 
         if (hasMember(gangMember)) return false;
 
-        return this.gangMembers.add(gangMember);
+        return this.gangMembers.add(gangMember.getUniqueId());
 
     }
 
@@ -234,8 +247,10 @@ public class Gang {
 
         ComponentBuilder componentBuilder = new ComponentBuilder();
 
-        componentBuilder.append(Utils.Colour(this.gangBoss.getDisplayName() + " &7has invited you to &9" + this.gangName + "."));
-        componentBuilder.append(Utils.Colour("&9&lClick Here to accept.")).event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/gang accept " + this.gangId.toString()));
+        componentBuilder.append(Utils.Colour(Objects.requireNonNull(Bukkit.getPlayer(this.gangBoss)).getDisplayName()
+                + " &7has invited you to &9" + this.gangName + "."));
+        componentBuilder.append(Utils.Colour("&9&lClick Here to accept.")).event(new ClickEvent(ClickEvent.Action.RUN_COMMAND,
+                "/gang accept " + this.gangId.toString()));
 
         player.spigot().sendMessage(componentBuilder.create());
 
@@ -252,17 +267,19 @@ public class Gang {
     public void sendGangMessage(String message) {
 
         if (!this.gangMembers.isEmpty())
-            this.gangMembers.forEach(player -> {
-                if (player.isOnline()) player.sendMessage(Utils.Chat("&8[&r" + this.gangName + "&8] " + message));
+            this.gangMembers.forEach(uuid -> {
+                Player player = Bukkit.getPlayer(uuid);
+                if (player != null && player.isOnline()) player.sendMessage(Utils.Chat("&8[&r" + this.gangName + "&8] " + message));
             });
 
         if (!this.gangUnderbosses.isEmpty())
-            this.gangUnderbosses.forEach(player -> {
-                if (player.isOnline()) player.sendMessage(Utils.Chat("&8[&r" + this.gangName + "&8] " + message));
+            this.gangUnderbosses.forEach(uuid -> {
+                Player player = Bukkit.getPlayer(uuid);
+                if (player != null && player.isOnline()) player.sendMessage(Utils.Chat("&8[&r" + this.gangName + "&8] " + message));
             });
 
-        if (this.gangBoss.isOnline())
-            this.gangBoss.sendMessage(Utils.Chat("&8[&r" + this.gangName + "&8] " + message));
+        if (Objects.requireNonNull(Bukkit.getPlayer(this.gangBoss)).isOnline())
+            Objects.requireNonNull(Bukkit.getPlayer(this.gangBoss)).sendMessage(Utils.Chat("&8[&r" + this.gangName + "&8] " + message));
 
     }
 
@@ -275,22 +292,47 @@ public class Gang {
     public boolean isAnyoneOnline() {
 
         boolean memberOnline = false;
-
-        List<Player> members = new ArrayList<>();
+        List<UUID> members = new ArrayList<>();
 
         members.addAll(this.gangMembers);
         members.addAll(this.gangUnderbosses);
         members.add(this.gangBoss);
 
-        for (Player player : members) {
+        for (UUID player : members) {
 
-            memberOnline = player.isOnline();
+            memberOnline = Objects.requireNonNull(Bukkit.getPlayer(player)).isOnline();
 
             if (memberOnline) break;
 
         }
 
         return memberOnline;
+
+    }
+
+    public String isLastPlayerOnline(Player player) {
+
+        if (!hasMember(player)) return "not-in-gang";
+
+        boolean memberOnline = false;
+        List<UUID> members = new ArrayList<>();
+
+        members.addAll(this.gangMembers);
+        members.addAll(this.gangUnderbosses);
+        members.add(this.gangBoss);
+
+        for (UUID member : members) {
+
+            if (member == player.getUniqueId()) continue;
+
+            memberOnline = Objects.requireNonNull(Bukkit.getPlayer(member)).isOnline();
+
+            if (memberOnline) break;
+
+        }
+
+        if (memberOnline) return "no";
+        else return "yes";
 
     }
 
@@ -305,7 +347,7 @@ public class Gang {
      */
     public boolean hasHighPermissions(Player player) {
 
-        return this.gangUnderbosses.contains(player) || this.gangBoss == player;
+        return this.gangUnderbosses.contains(player.getUniqueId()) || Objects.equals(this.gangBoss.toString(), player.getUniqueId().toString());
 
     }
 
@@ -319,15 +361,15 @@ public class Gang {
      */
     public boolean hasMember(Player player) {
 
-        if (this.gangBoss == player) return true;
+        if (Objects.equals(this.gangBoss.toString(), player.getUniqueId().toString())) return true;
 
         if (!this.gangUnderbosses.isEmpty())
-            for (Player underboss : this.gangUnderbosses)
-                if (underboss == player) return true;
+            for (UUID underboss : this.gangUnderbosses)
+                if (Objects.equals(underboss.toString(), player.getUniqueId().toString())) return true;
 
         if (!this.gangMembers.isEmpty())
-            for (Player member : this.gangMembers)
-                if (member == player) return true;
+            for (UUID member : this.gangMembers)
+                if (Objects.equals(member.toString(), player.getUniqueId().toString())) return true;
 
         return false;
 
@@ -336,22 +378,22 @@ public class Gang {
     public boolean promoteMember(Player player) {
 
         if (!hasMember(player)) return false;
-        if (this.gangUnderbosses.contains(player) && !this.gangMembers.contains(player)) return false;
+        if (this.gangUnderbosses.contains(player.getUniqueId()) && !this.gangMembers.contains(player.getUniqueId())) return false;
 
-        this.gangMembers.remove(player);
+        this.gangMembers.remove(player.getUniqueId());
 
-        return this.gangUnderbosses.add(player);
+        return this.gangUnderbosses.add(player.getUniqueId());
 
     }
 
     public boolean demoteMember(Player player) {
 
         if (!hasMember(player)) return false;
-        if (!this.gangUnderbosses.contains(player) && this.gangMembers.contains(player)) return false;
+        if (!this.gangUnderbosses.contains(player.getUniqueId()) && this.gangMembers.contains(player.getUniqueId())) return false;
 
-        this.gangUnderbosses.remove(player);
+        this.gangUnderbosses.remove(player.getUniqueId());
 
-        return this.gangMembers.add(player);
+        return this.gangMembers.add(player.getUniqueId());
 
     }
 
@@ -364,12 +406,17 @@ public class Gang {
 
         Config config = PrisonCore.gangConfig;
 
-        config.add("Gangs." + this.gangId.toString() + ".Name", this.gangName);
-        config.add("Gangs." + this.gangId.toString() + ".Leader", this.gangBoss.getUniqueId().toString());
-        config.add("Gangs." + this.gangId.toString() + ".Underbosses", this.gangUnderbosses);
-        config.add("Gangs." + this.gangId.toString() + ".Members", this.gangMembers);
+        config.set("Gangs." + this.gangId.toString() + ".Name", this.gangName);
+        config.set("Gangs." + this.gangId.toString() + ".Boss", this.gangBoss.toString());
 
-        config.reload();
+        List<String> uuids = new ArrayList<>();
+        this.gangUnderbosses.forEach(uuid -> uuids.add(uuid.toString()));
+        config.set("Gangs." + this.gangId.toString() + ".Underbosses", uuids);
+        uuids.clear();
+
+        this.gangMembers.forEach(uuid -> uuids.add(uuid.toString()));
+        config.set("Gangs." + this.gangId.toString() + ".Members", uuids);
+        uuids.clear();
 
     }
 
@@ -387,6 +434,33 @@ public class Gang {
         config.set("Gangs." + this.gangId.toString(), null);
 
         config.reload();
+
+    }
+
+    @Override
+    public String toString() {
+
+        String underbosses = null;
+        String members = null;
+
+        if (!this.gangUnderbosses.isEmpty()) {
+            StringBuilder underbossesBuilder = new StringBuilder();
+            this.gangUnderbosses.forEach(uuid -> underbossesBuilder.append(uuid.toString()).append(", "));
+            underbosses = underbossesBuilder.substring(0, underbossesBuilder.length() - 2);
+        }
+
+        if (!this.gangMembers.isEmpty()) {
+            StringBuilder membersBuilder = new StringBuilder();
+            this.gangMembers.forEach(uuid -> membersBuilder.append(uuid.toString()).append(", "));
+            members = membersBuilder.substring(0, membersBuilder.length() - 2);
+        }
+
+        return "Gang[gangId='" + gangId.toString() +
+                "', gangName='" + gangName +
+                "', gangBoss='" + this.gangBoss.toString() +
+                "', gangUnderbosses='" + (underbosses != null ? underbosses : "") +
+                "', gangMembers='" + (members != null ? members : "") +
+                "']";
 
     }
 
