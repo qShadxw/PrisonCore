@@ -1,5 +1,6 @@
 package uk.co.tmdavies.prisoncore.commands;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
@@ -11,9 +12,9 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import uk.co.tmdavies.prisoncore.PrisonCore;
 import uk.co.tmdavies.prisoncore.objects.Gang;
+import uk.co.tmdavies.prisoncore.utils.GangUtils;
 import uk.co.tmdavies.prisoncore.utils.Utils;
 
-import javax.print.attribute.ResolutionSyntax;
 import java.util.List;
 import java.util.Objects;
 
@@ -38,6 +39,9 @@ public class GangCommand implements CommandExecutor, TabCompleter {
         }
 
         boolean isConsole = !(sender instanceof Player);
+        Player player;
+        Player target;
+        Gang gang;
 
         // /gang <create|disband|invite|kick|promote|accept> <gangName|player> <rank>
 
@@ -56,9 +60,213 @@ public class GangCommand implements CommandExecutor, TabCompleter {
                 break;
 
             case "disband":
+                // /gang disband name
+                if (args.length == 2) {
+
+                    if (!sender.hasPermission("prisoncore.gang.admin")) {
+
+                        sender.sendMessage(Utils.Chat("&cYou do not have permission to execute this command."));
+                        break;
+
+                    }
+
+                    gang = GangUtils.getGangByName(args[1]);
+
+                    if (gang == null) {
+
+                        sender.sendMessage(Utils.Chat("&cInvalid Gang."));
+                        break;
+
+                    }
+
+                    gang.disband();
+
+                    GangUtils.removeGang(gang);
+
+                    sender.sendMessage(Utils.Chat("&aGang has been disbanded."));
+
+                    break;
+
+                }
+                // /gang disband
+                if (isConsole) {
+
+                    sender.sendMessage(Utils.Chat("&cOnly players may execute this command."));
+                    break;
+
+                }
+
+                player = (Player) sender;
+                gang = GangUtils.getGangByMember(player);
+
+                if (gang == null) {
+
+                    player.sendMessage(Utils.Chat("&cYou are not part of a gang."));
+                    break;
+
+                }
+
+                gang.disband();
+
+                GangUtils.removeGang(gang);
+
+                break;
+
             case "invite":
+
+                if (isConsole) {
+
+                    sender.sendMessage(Utils.Chat("&cOnly players may execute this command."));
+                    break;
+
+                }
+
+                if (args.length != 2) {
+
+                    sender.sendMessage(getSyntax());
+                    break;
+
+                }
+
+                player = (Player) sender;
+                gang = GangUtils.getGangByMember(player);
+
+                if (gang == null) {
+
+                    player.sendMessage(Utils.Chat("&cYou are not part of a gang."));
+                    break;
+
+                }
+
+                if (!gang.hasHighPermissions(player)) {
+
+                    player.sendMessage(Utils.Chat("&cYou do not have the permission to invite players to your gang."));
+                    break;
+
+                }
+
+                target = Bukkit.getPlayer(args[1]);
+
+                if (target == null || !target.isOnline()) {
+
+                    player.sendMessage(Utils.Chat("&c" + args[1] + " is offline."));
+                    break;
+
+                }
+
+                gang.invitePlayer(target);
+
+                player.sendMessage(Utils.Chat("&aSuccessfully invited " + args[1]));
+
+                break;
+
             case "kick":
+
+                if (isConsole) {
+
+                    sender.sendMessage(Utils.Chat("&cOnly players may execute this command."));
+                    break;
+
+                }
+
+                if (args.length != 2) {
+
+                    sender.sendMessage(getSyntax());
+                    break;
+
+                }
+
+                player = (Player) sender;
+                gang = GangUtils.getGangByMember(player);
+
+                if (gang == null) {
+
+                    player.sendMessage(Utils.Chat("&cYou are not part of a gang."));
+                    break;
+
+                }
+
+                if (!gang.hasHighPermissions(player)) {
+
+                    player.sendMessage(Utils.Chat("&cYou do not have the permission to invite players to your gang."));
+                    break;
+
+                }
+
+                target = Bukkit.getPlayer(args[1]);
+
+                if (target == null || !target.isOnline()) {
+
+                    player.sendMessage(Utils.Chat("&c" + args[1] + " is offline."));
+                    break;
+
+                }
+
+                if (!gang.hasMember(target)) {
+
+                    player.sendMessage(Utils.Chat("&c" + args[1] + " is not in the gang."));
+                    break;
+
+                }
+
+                gang.removeGangMember(target);
+
+                gang.sendGangMessage("&a" + args[1] + " has been removed from " + gang.getGangName());
+
+                break;
+
             case "promote":
+
+                if (isConsole) {
+
+                    sender.sendMessage(Utils.Chat("&cOnly players may execute this command."));
+                    break;
+
+                }
+
+                if (args.length != 2) {
+
+                    sender.sendMessage(getSyntax());
+                    break;
+
+                }
+
+                player = (Player) sender;
+                gang = GangUtils.getGangByMember(player);
+
+                if (gang == null) {
+
+                    player.sendMessage(Utils.Chat("&cYou are not part of a gang."));
+                    break;
+
+                }
+
+                if (!gang.hasHighPermissions(player)) {
+
+                    player.sendMessage(Utils.Chat("&cYou do not have the permission to invite players to your gang."));
+                    break;
+
+                }
+
+                target = Bukkit.getPlayer(args[1]);
+
+                if (target == null || !target.isOnline()) {
+
+                    player.sendMessage(Utils.Chat("&c" + args[1] + " is offline."));
+                    break;
+
+                }
+
+                if (!gang.hasMember(target)) {
+
+                    player.sendMessage(Utils.Chat("&c" + args[1] + " is not in the gang."));
+                    break;
+
+                }
+
+                gang.promoteMember(target);
+
+
 
             default:
                 sender.sendMessage(getSyntax());

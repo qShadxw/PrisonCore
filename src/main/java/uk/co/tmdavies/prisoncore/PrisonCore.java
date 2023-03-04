@@ -85,6 +85,9 @@ public final class PrisonCore extends JavaPlugin {
     @Override
     public void onDisable() {
 
+        if (!gangCache.isEmpty())
+            for (Gang gang : gangCache.values()) gang.save();
+
         if (Bukkit.getOnlinePlayers().isEmpty()) return;
 
         for (Player player : Bukkit.getOnlinePlayers()) {
