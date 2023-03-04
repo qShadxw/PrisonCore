@@ -336,7 +336,6 @@ public class Gang {
     public boolean promoteMember(Player player) {
 
         if (!hasMember(player)) return false;
-        if (this.gangBoss == player) return false;
         if (this.gangUnderbosses.contains(player) && !this.gangMembers.contains(player)) return false;
 
         this.gangMembers.remove(player);
@@ -348,7 +347,6 @@ public class Gang {
     public boolean demoteMember(Player player) {
 
         if (!hasMember(player)) return false;
-        if (this.gangBoss == player) return false;
         if (!this.gangUnderbosses.contains(player) && this.gangMembers.contains(player)) return false;
 
         this.gangUnderbosses.remove(player);
