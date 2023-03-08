@@ -31,6 +31,7 @@ public class CustomEnchantCommand implements CommandExecutor, TabCompleter {
         addEnchantmentMessage = plugin.getConfig().getString("enchants.add-enchant");
         clearEnchantmentMessage = plugin.getConfig().getString("enchants.clear-enchant");
         Objects.requireNonNull(plugin.getCommand("ce")).setExecutor(this);
+        Objects.requireNonNull(plugin.getCommand("ce")).setTabCompleter(this);
 
     }
 

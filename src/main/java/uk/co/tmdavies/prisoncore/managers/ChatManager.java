@@ -157,6 +157,20 @@ public class ChatManager {
 
         }
 
+        @Override
+        public String toString() {
+
+            return switch (getId()) {
+
+                case 0 -> "SYSTEM";
+                case 1 -> "GENERAL";
+                case 2 -> "PRIVATE";
+                default -> throw new IllegalStateException("Unexpected value: " + getId());
+
+            };
+
+        }
+
     }
 
 }
